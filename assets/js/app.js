@@ -426,11 +426,40 @@ class AlhamdulillahApp {
             location.reload();
         }
     }
+
+    // Notification system for storage messages
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-message">${message}</span>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+            </div>
+        `;
+        
+        // Add to page
+        document.body.appendChild(notification);
+        
+        // Show with animation
+        setTimeout(() => notification.classList.add('show'), 10);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 5000);
+    }
 }
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.alhamdulillahApp = new AlhamdulillahApp();
+    
+    // Make notification system available globally for storage system
+    window.showNotification = window.alhamdulillahApp.showNotification.bind(window.alhamdulillahApp);
 });
 
 // Service Worker Registration
