@@ -633,3 +633,474 @@ otification System Styles */
         font-size: 0.85rem;
     }
 }
+/*
+ History Interface Styles */
+.history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
+}
+
+.history-controls {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.history-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.history-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.history-btn:active {
+    transform: scale(0.95);
+}
+
+.history-btn svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+/* Search Panel */
+.history-search-panel {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.history-search-panel.active {
+    display: flex;
+}
+
+.search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(15, 23, 42, 0.6);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.search-clear-btn {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: none;
+}
+
+.search-clear-btn.visible {
+    display: block;
+}
+
+.search-clear-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+}
+
+.search-filters {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-select {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Enhanced History Cards */
+.history-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.history-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.history-card.marked {
+    border-left: 4px solid #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.history-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.history-card-timestamp {
+    font-size: 0.625rem;
+    color: rgba(15, 23, 42, 0.6);
+    font-weight: 500;
+}
+
+.history-card-actions {
+    display: flex;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.history-card:hover .history-card-actions {
+    opacity: 1;
+}
+
+.history-card-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 0.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.history-card-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.history-card-btn svg {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+.history-card-btn.favorite.active {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: white;
+}
+
+.history-card-btn.delete:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+}
+
+.history-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.history-card .blessing-english {
+    font-size: 0.875rem;
+    color: rgba(15, 23, 42, 0.9);
+    text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+}
+
+.history-card .blessing-arabic {
+    font-size: 1rem;
+    color: rgba(55, 48, 163, 0.95);
+    text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+}
+
+.history-card-category {
+    font-size: 0.625rem;
+    color: rgba(15, 23, 42, 0.5);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+}
+
+/* History Stats */
+.history-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--border-radius);
+    margin-top: 0.75rem;
+    flex-shrink: 0;
+}
+
+.stats-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.stats-label {
+    font-size: 0.625rem;
+    color: rgba(15, 23, 42, 0.6);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stats-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* Empty State */
+.history-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    color: rgba(15, 23, 42, 0.6);
+    min-height: 8rem;
+}
+
+.history-empty-icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.history-empty-text {
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* Confirmation Dialog */
+.confirmation-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.confirmation-dialog.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirmation-content {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    max-width: 300px;
+    width: 90%;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.confirmation-dialog.active .confirmation-content {
+    transform: scale(1);
+}
+
+.confirmation-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.confirmation-message {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.confirmation-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.confirmation-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 4rem;
+}
+
+.confirmation-btn.primary {
+    background: #ef4444;
+    color: white;
+}
+
+.confirmation-btn.primary:hover {
+    background: #dc2626;
+}
+
+.confirmation-btn.secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.confirmation-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments for history */
+@media (max-width: 768px) {
+    .history-controls {
+        gap: 0.125rem;
+    }
+    
+    .history-btn {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+    
+    .history-btn svg {
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+    
+    .search-filters {
+        flex-direction: column;
+    }
+    
+    .history-stats {
+        gap: 0.75rem;
+    }
+    
+    .stats-item {
+        gap: 0.125rem;
+    }
+}
+
+/* Animation for history items */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.history-card.slide-in-up {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Toggle button rotation */
+.history-toggle-btn.collapsed svg {
+    transform: rotate(180deg);
+}
+
+.history-toggle-btn svg {
+    transition: transform 0.3s ease;
+}
+
+/* History container collapsed state */
+.history-container.collapsed {
+    display: none;
+}
+
+.history-stats.collapsed {
+    display: none;
+}

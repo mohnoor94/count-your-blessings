@@ -186,9 +186,7 @@ class AlhamdulillahApp {
             console.log('Requesting new blessing...');
             const newBlessing = window.blessingsManager.getNewBlessing();
             console.log('New blessing received:', newBlessing);
-            if (newBlessing) {
-                this.updateHistoryDisplay();
-            }
+            // History display is automatically updated by the HistoryManager
         } else {
             console.log('blessingsManager not available, using simple fallback');
             // Simple fallback with embedded blessings
@@ -221,8 +219,7 @@ class AlhamdulillahApp {
 
     handleLanguageChanged(detail) {
         // Language manager handles the content updates
-        // We just need to update the history display
-        this.updateHistoryDisplay();
+        // History display is automatically updated by the HistoryManager
     }
 
     handleBlessingsLoaded(detail) {
@@ -231,45 +228,11 @@ class AlhamdulillahApp {
     }
 
     initializeHistory() {
-        if (!window.blessingsManager) return;
-        
-        // Add welcome card
-        this.addWelcomeCard();
-        
-        // Display existing history
-        this.updateHistoryDisplay();
-    }
-
-    addWelcomeCard() {
-        if (!this.elements.historyContainer) return;
-        
-        const welcomeCard = document.createElement('div');
-        welcomeCard.className = 'history-card slide-in-up';
-        welcomeCard.innerHTML = `
-            <p class="blessing-english">Your journey starts here.</p>
-            <p class="blessing-arabic">رحلتك تبدأ هنا</p>
-        `;
-        
-        this.elements.historyContainer.appendChild(welcomeCard);
-    }
-
-    updateHistoryDisplay() {
-        if (!this.elements.historyContainer || !window.blessingsManager || !window.languageManager) return;
-        
-        // Clear existing history cards (keep welcome card)
-        const historyCards = this.elements.historyContainer.querySelectorAll('.history-card:not(:last-child)');
-        historyCards.forEach(card => card.remove());
-        
-        // Get history and display
-        const history = window.blessingsManager.getHistory();
-        history.reverse().forEach(blessing => {
-            if (blessing) {
-                const card = window.languageManager.createHistoryCard(blessing);
-                // Insert before welcome card
-                const welcomeCard = this.elements.historyContainer.lastElementChild;
-                this.elements.historyContainer.insertBefore(card, welcomeCard);
-            }
-        });
+        // History is now managed by the HistoryManager
+        // Just trigger an initial update
+        if (window.historyManager) {
+            window.historyManager.updateDisplay();
+        }
     }
 
     setupTouchGestures() {

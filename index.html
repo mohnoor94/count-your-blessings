@@ -87,9 +87,62 @@
 
             <!-- History Section -->
             <section class="history-section">
-                <h3 class="history-title">Your Journey of Gratitude</h3>
+                <div class="history-header">
+                    <h3 class="history-title">Your Journey of Gratitude</h3>
+                    <div class="history-controls">
+                        <button class="history-btn" id="history-search-btn" aria-label="Search History">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                        <button class="history-btn" id="history-clear-btn" aria-label="Clear History">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3,6 5,6 21,6"></polyline>
+                                <path d="m19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"></path>
+                            </svg>
+                        </button>
+                        <button class="history-btn" id="history-toggle-btn" aria-label="Toggle History">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Search Panel -->
+                <div id="history-search-panel" class="history-search-panel">
+                    <div class="search-input-container">
+                        <input type="text" id="history-search-input" placeholder="Search blessings..." class="search-input">
+                        <button id="history-search-clear" class="search-clear-btn">×</button>
+                    </div>
+                    <div class="search-filters">
+                        <select id="history-category-filter" class="filter-select">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select id="history-language-filter" class="filter-select">
+                            <option value="">All Languages</option>
+                            <option value="english">English</option>
+                            <option value="arabic">Arabic</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- History Container -->
                 <div id="history-container" class="history-container">
                     <!-- History items will be added here -->
+                </div>
+                
+                <!-- History Stats -->
+                <div id="history-stats" class="history-stats">
+                    <div class="stats-item">
+                        <span class="stats-label">Total:</span>
+                        <span class="stats-value" id="stats-total">0</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Favorites:</span>
+                        <span class="stats-value" id="stats-favorites">0</span>
+                    </div>
                 </div>
             </section>
         </main>
@@ -107,6 +160,7 @@
     <script src="assets/js/storage.js" defer></script>
     <script src="assets/js/language.js" defer></script>
     <script src="assets/js/blessings.js" defer></script>
+    <script src="assets/js/history.js" defer></script>
     <script src="assets/js/app.js" defer></script>
 </body>
 
