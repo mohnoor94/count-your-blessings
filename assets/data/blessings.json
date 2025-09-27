@@ -1,0 +1,675 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-27",
+    "totalCount": 50,
+    "languages": [
+      "arabic",
+      "english"
+    ],
+    "categories": [
+      "general",
+      "health",
+      "sustenance",
+      "family",
+      "nature",
+      "knowledge",
+      "protection",
+      "gratitude",
+      "guidance",
+      "peace"
+    ]
+  },
+  "blessings": [
+    {
+      "id": "blessing-001",
+      "arabic": "الحمد لله رب العالمين",
+      "english": "Praise be to Allah, Lord of all the worlds",
+      "transliteration": "Alhamdulillahi rabbil alameen",
+      "category": "general",
+      "tags": [
+        "praise",
+        "gratitude",
+        "lord",
+        "worlds"
+      ]
+    },
+    {
+      "id": "blessing-002",
+      "arabic": "الحمد لله الذي أطعمنا وسقانا",
+      "english": "Praise be to Allah who has fed us and given us drink",
+      "transliteration": "Alhamdulillahi allathee at'amana wa saqana",
+      "category": "sustenance",
+      "tags": [
+        "food",
+        "drink",
+        "sustenance",
+        "nourishment"
+      ]
+    },
+    {
+      "id": "blessing-003",
+      "arabic": "الحمد لله الذي عافاني في بدني",
+      "english": "Praise be to Allah who has granted me health in my body",
+      "transliteration": "Alhamdulillahi allathee afanee fee badanee",
+      "category": "health",
+      "tags": [
+        "health",
+        "body",
+        "wellness",
+        "strength"
+      ]
+    },
+    {
+      "id": "blessing-004",
+      "arabic": "الحمد لله الذي كساني هذا الثوب",
+      "english": "Praise be to Allah who has clothed me with this garment",
+      "transliteration": "Alhamdulillahi allathee kasanee hatha ath-thawb",
+      "category": "sustenance",
+      "tags": [
+        "clothing",
+        "protection",
+        "covering",
+        "provision"
+      ]
+    },
+    {
+      "id": "blessing-005",
+      "arabic": "الحمد لله الذي آواني",
+      "english": "Praise be to Allah who has given me shelter",
+      "transliteration": "Alhamdulillahi allathee awanee",
+      "category": "protection",
+      "tags": [
+        "shelter",
+        "home",
+        "safety",
+        "protection"
+      ]
+    },
+    {
+      "id": "blessing-006",
+      "arabic": "الحمد لله الذي هداني للإسلام",
+      "english": "Praise be to Allah who has guided me to Islam",
+      "transliteration": "Alhamdulillahi allathee hadanee lil-Islam",
+      "category": "guidance",
+      "tags": [
+        "guidance",
+        "islam",
+        "faith",
+        "direction"
+      ]
+    },
+    {
+      "id": "blessing-007",
+      "arabic": "الحمد لله الذي علمني ما لم أكن أعلم",
+      "english": "Praise be to Allah who has taught me what I did not know",
+      "transliteration": "Alhamdulillahi allathee allamanee ma lam akun a'lam",
+      "category": "knowledge",
+      "tags": [
+        "knowledge",
+        "learning",
+        "wisdom",
+        "education"
+      ]
+    },
+    {
+      "id": "blessing-008",
+      "arabic": "الحمد لله الذي بنعمته تتم الصالحات",
+      "english": "Praise be to Allah, by whose grace good deeds are completed",
+      "transliteration": "Alhamdulillahi allathee bi ni'matihi tatimmu as-salihat",
+      "category": "general",
+      "tags": [
+        "grace",
+        "good deeds",
+        "completion",
+        "success"
+      ]
+    },
+    {
+      "id": "blessing-009",
+      "arabic": "الحمد لله الذي أحياني بعد ما أماتني",
+      "english": "Praise be to Allah who has given me life after death (sleep)",
+      "transliteration": "Alhamdulillahi allathee ahyanee ba'da ma amatanee",
+      "category": "general",
+      "tags": [
+        "life",
+        "awakening",
+        "sleep",
+        "renewal"
+      ]
+    },
+    {
+      "id": "blessing-010",
+      "arabic": "الحمد لله الذي رزقني الأهل والولد",
+      "english": "Praise be to Allah who has blessed me with family and children",
+      "transliteration": "Alhamdulillahi allathee razaqanee al-ahl wal-walad",
+      "category": "family",
+      "tags": [
+        "family",
+        "children",
+        "love",
+        "relationships"
+      ]
+    },
+    {
+      "id": "blessing-011",
+      "arabic": "الحمد لله الذي جعل لي عينين أبصر بهما",
+      "english": "Praise be to Allah who has given me eyes with which to see",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee aynayn ubsiru bihima",
+      "category": "health",
+      "tags": [
+        "sight",
+        "eyes",
+        "vision",
+        "senses"
+      ]
+    },
+    {
+      "id": "blessing-012",
+      "arabic": "الحمد لله الذي جعل لي أذنين أسمع بهما",
+      "english": "Praise be to Allah who has given me ears with which to hear",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee uthunayn asma'u bihima",
+      "category": "health",
+      "tags": [
+        "hearing",
+        "ears",
+        "sound",
+        "senses"
+      ]
+    },
+    {
+      "id": "blessing-013",
+      "arabic": "الحمد لله الذي جعل لي لساناً أنطق به",
+      "english": "Praise be to Allah who has given me a tongue with which to speak",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee lisanan antiqu bihi",
+      "category": "health",
+      "tags": [
+        "speech",
+        "tongue",
+        "communication",
+        "expression"
+      ]
+    },
+    {
+      "id": "blessing-014",
+      "arabic": "الحمد لله الذي سخر لنا هذا",
+      "english": "Praise be to Allah who has made this subservient to us",
+      "transliteration": "Alhamdulillahi allathee sakhkhara lana hatha",
+      "category": "general",
+      "tags": [
+        "provision",
+        "service",
+        "blessing",
+        "gratitude"
+      ]
+    },
+    {
+      "id": "blessing-015",
+      "arabic": "الحمد لله الذي أنزل من السماء ماءً",
+      "english": "Praise be to Allah who sends down water from the sky",
+      "transliteration": "Alhamdulillahi allathee anzala min as-sama'i ma'an",
+      "category": "nature",
+      "tags": [
+        "water",
+        "rain",
+        "sky",
+        "nature"
+      ]
+    },
+    {
+      "id": "blessing-016",
+      "arabic": "الحمد لله الذي أنبت لنا الزرع",
+      "english": "Praise be to Allah who causes crops to grow for us",
+      "transliteration": "Alhamdulillahi allathee anbata lana az-zar'",
+      "category": "nature",
+      "tags": [
+        "crops",
+        "growth",
+        "agriculture",
+        "sustenance"
+      ]
+    },
+    {
+      "id": "blessing-017",
+      "arabic": "الحمد لله الذي جعل الشمس ضياءً",
+      "english": "Praise be to Allah who made the sun a source of light",
+      "transliteration": "Alhamdulillahi allathee ja'ala ash-shamsa diya'an",
+      "category": "nature",
+      "tags": [
+        "sun",
+        "light",
+        "warmth",
+        "energy"
+      ]
+    },
+    {
+      "id": "blessing-018",
+      "arabic": "الحمد لله الذي جعل القمر نوراً",
+      "english": "Praise be to Allah who made the moon a source of light",
+      "transliteration": "Alhamdulillahi allathee ja'ala al-qamara nuran",
+      "category": "nature",
+      "tags": [
+        "moon",
+        "light",
+        "night",
+        "guidance"
+      ]
+    },
+    {
+      "id": "blessing-019",
+      "arabic": "الحمد لله الذي خلق الليل والنهار",
+      "english": "Praise be to Allah who created the night and the day",
+      "transliteration": "Alhamdulillahi allathee khalaqa al-layla wan-nahar",
+      "category": "nature",
+      "tags": [
+        "night",
+        "day",
+        "time",
+        "cycle"
+      ]
+    },
+    {
+      "id": "blessing-020",
+      "arabic": "الحمد لله الذي جعل لنا النوم سباتاً",
+      "english": "Praise be to Allah who made sleep a rest for us",
+      "transliteration": "Alhamdulillahi allathee ja'ala lana an-nawma subatan",
+      "category": "health",
+      "tags": [
+        "sleep",
+        "rest",
+        "peace",
+        "recovery"
+      ]
+    },
+    {
+      "id": "blessing-021",
+      "arabic": "الحمد لله الذي شفاني من مرضي",
+      "english": "Praise be to Allah who has healed me from my illness",
+      "transliteration": "Alhamdulillahi allathee shafanee min maradee",
+      "category": "health",
+      "tags": [
+        "healing",
+        "recovery",
+        "health",
+        "cure"
+      ]
+    },
+    {
+      "id": "blessing-022",
+      "arabic": "الحمد لله الذي أذهب عني الهم والحزن",
+      "english": "Praise be to Allah who has removed worry and sadness from me",
+      "transliteration": "Alhamdulillahi allathee athhaba annee al-hamma wal-huzn",
+      "category": "peace",
+      "tags": [
+        "peace",
+        "comfort",
+        "relief",
+        "tranquility"
+      ]
+    },
+    {
+      "id": "blessing-023",
+      "arabic": "الحمد لله الذي فرج عني الكرب",
+      "english": "Praise be to Allah who has relieved me from distress",
+      "transliteration": "Alhamdulillahi allathee farraja annee al-karb",
+      "category": "peace",
+      "tags": [
+        "relief",
+        "distress",
+        "comfort",
+        "ease"
+      ]
+    },
+    {
+      "id": "blessing-024",
+      "arabic": "الحمد لله الذي رزقني من الطيبات",
+      "english": "Praise be to Allah who has provided me with good things",
+      "transliteration": "Alhamdulillahi allathee razaqanee min at-tayyibat",
+      "category": "sustenance",
+      "tags": [
+        "provision",
+        "good things",
+        "blessing",
+        "sustenance"
+      ]
+    },
+    {
+      "id": "blessing-025",
+      "arabic": "الحمد لله الذي جعلني من المسلمين",
+      "english": "Praise be to Allah who has made me among the Muslims",
+      "transliteration": "Alhamdulillahi allathee ja'alanee min al-muslimeen",
+      "category": "guidance",
+      "tags": [
+        "islam",
+        "faith",
+        "community",
+        "guidance"
+      ]
+    },
+    {
+      "id": "blessing-026",
+      "arabic": "الحمد لله الذي وفقني لطاعته",
+      "english": "Praise be to Allah who has enabled me to obey Him",
+      "transliteration": "Alhamdulillahi allathee waffaqanee li ta'atihi",
+      "category": "guidance",
+      "tags": [
+        "obedience",
+        "worship",
+        "guidance",
+        "success"
+      ]
+    },
+    {
+      "id": "blessing-027",
+      "arabic": "الحمد لله الذي بارك لي في رزقي",
+      "english": "Praise be to Allah who has blessed my sustenance",
+      "transliteration": "Alhamdulillahi allathee baraka lee fee rizqee",
+      "category": "sustenance",
+      "tags": [
+        "blessing",
+        "sustenance",
+        "abundance",
+        "provision"
+      ]
+    },
+    {
+      "id": "blessing-028",
+      "arabic": "الحمد لله الذي أعطاني القوة",
+      "english": "Praise be to Allah who has given me strength",
+      "transliteration": "Alhamdulillahi allathee a'tanee al-quwwah",
+      "category": "health",
+      "tags": [
+        "strength",
+        "power",
+        "ability",
+        "energy"
+      ]
+    },
+    {
+      "id": "blessing-029",
+      "arabic": "الحمد لله الذي حفظني من الشر",
+      "english": "Praise be to Allah who has protected me from evil",
+      "transliteration": "Alhamdulillahi allathee hafizanee min ash-sharr",
+      "category": "protection",
+      "tags": [
+        "protection",
+        "safety",
+        "evil",
+        "security"
+      ]
+    },
+    {
+      "id": "blessing-030",
+      "arabic": "الحمد لله الذي جعل لي أصدقاء صالحين",
+      "english": "Praise be to Allah who has given me righteous friends",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee asdiqa'a saliheen",
+      "category": "family",
+      "tags": [
+        "friends",
+        "companionship",
+        "righteousness",
+        "relationships"
+      ]
+    },
+    {
+      "id": "blessing-031",
+      "arabic": "الحمد لله الذي يسر لي أموري",
+      "english": "Praise be to Allah who has made my affairs easy",
+      "transliteration": "Alhamdulillahi allathee yassara lee umuree",
+      "category": "general",
+      "tags": [
+        "ease",
+        "affairs",
+        "facilitation",
+        "success"
+      ]
+    },
+    {
+      "id": "blessing-032",
+      "arabic": "الحمد لله الذي أنعم علي بالصحة",
+      "english": "Praise be to Allah who has blessed me with health",
+      "transliteration": "Alhamdulillahi allathee an'ama alayya bil-sihhah",
+      "category": "health",
+      "tags": [
+        "health",
+        "blessing",
+        "wellness",
+        "vitality"
+      ]
+    },
+    {
+      "id": "blessing-033",
+      "arabic": "الحمد لله الذي رزقني العقل",
+      "english": "Praise be to Allah who has blessed me with intellect",
+      "transliteration": "Alhamdulillahi allathee razaqanee al-aql",
+      "category": "knowledge",
+      "tags": [
+        "intellect",
+        "mind",
+        "reasoning",
+        "wisdom"
+      ]
+    },
+    {
+      "id": "blessing-034",
+      "arabic": "الحمد لله الذي جعل لي قلباً يخشاه",
+      "english": "Praise be to Allah who has given me a heart that fears Him",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee qalban yakhshahu",
+      "category": "guidance",
+      "tags": [
+        "heart",
+        "fear",
+        "reverence",
+        "spirituality"
+      ]
+    },
+    {
+      "id": "blessing-035",
+      "arabic": "الحمد لله الذي ستر عيوبي",
+      "english": "Praise be to Allah who has concealed my faults",
+      "transliteration": "Alhamdulillahi allathee satara uyubee",
+      "category": "protection",
+      "tags": [
+        "concealment",
+        "faults",
+        "mercy",
+        "privacy"
+      ]
+    },
+    {
+      "id": "blessing-036",
+      "arabic": "الحمد لله الذي غفر لي ذنوبي",
+      "english": "Praise be to Allah who has forgiven my sins",
+      "transliteration": "Alhamdulillahi allathee ghafara lee thunubee",
+      "category": "guidance",
+      "tags": [
+        "forgiveness",
+        "sins",
+        "mercy",
+        "redemption"
+      ]
+    },
+    {
+      "id": "blessing-037",
+      "arabic": "الحمد لله الذي رزقني الصبر",
+      "english": "Praise be to Allah who has blessed me with patience",
+      "transliteration": "Alhamdulillahi allathee razaqanee as-sabr",
+      "category": "guidance",
+      "tags": [
+        "patience",
+        "endurance",
+        "perseverance",
+        "strength"
+      ]
+    },
+    {
+      "id": "blessing-038",
+      "arabic": "الحمد لله الذي أنعم علي بالأمن",
+      "english": "Praise be to Allah who has blessed me with security",
+      "transliteration": "Alhamdulillahi allathee an'ama alayya bil-amn",
+      "category": "protection",
+      "tags": [
+        "security",
+        "safety",
+        "peace",
+        "protection"
+      ]
+    },
+    {
+      "id": "blessing-039",
+      "arabic": "الحمد لله الذي جعل لي عملاً أتكسب منه",
+      "english": "Praise be to Allah who has given me work to earn from",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee amalan atakaasabu minhu",
+      "category": "sustenance",
+      "tags": [
+        "work",
+        "earning",
+        "livelihood",
+        "provision"
+      ]
+    },
+    {
+      "id": "blessing-040",
+      "arabic": "الحمد لله الذي بارك لي في وقتي",
+      "english": "Praise be to Allah who has blessed my time",
+      "transliteration": "Alhamdulillahi allathee baraka lee fee waqtee",
+      "category": "general",
+      "tags": [
+        "time",
+        "blessing",
+        "productivity",
+        "efficiency"
+      ]
+    },
+    {
+      "id": "blessing-041",
+      "arabic": "الحمد لله الذي جعل لي مكاناً آمناً",
+      "english": "Praise be to Allah who has given me a safe place",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee makanan aminan",
+      "category": "protection",
+      "tags": [
+        "safety",
+        "place",
+        "security",
+        "shelter"
+      ]
+    },
+    {
+      "id": "blessing-042",
+      "arabic": "الحمد لله الذي أطال في عمري",
+      "english": "Praise be to Allah who has extended my life",
+      "transliteration": "Alhamdulillahi allathee atala fee umree",
+      "category": "general",
+      "tags": [
+        "life",
+        "longevity",
+        "time",
+        "blessing"
+      ]
+    },
+    {
+      "id": "blessing-043",
+      "arabic": "الحمد لله الذي جعلني أمشي على قدمي",
+      "english": "Praise be to Allah who enables me to walk on my feet",
+      "transliteration": "Alhamdulillahi allathee ja'alanee amshee ala qadamayya",
+      "category": "health",
+      "tags": [
+        "walking",
+        "mobility",
+        "feet",
+        "movement"
+      ]
+    },
+    {
+      "id": "blessing-044",
+      "arabic": "الحمد لله الذي جعل لي يدين أعمل بهما",
+      "english": "Praise be to Allah who has given me hands to work with",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee yadayn a'malu bihima",
+      "category": "health",
+      "tags": [
+        "hands",
+        "work",
+        "ability",
+        "dexterity"
+      ]
+    },
+    {
+      "id": "blessing-045",
+      "arabic": "الحمد لله الذي نجاني من البلاء",
+      "english": "Praise be to Allah who has saved me from trials",
+      "transliteration": "Alhamdulillahi allathee najjanee min al-bala'",
+      "category": "protection",
+      "tags": [
+        "salvation",
+        "trials",
+        "protection",
+        "relief"
+      ]
+    },
+    {
+      "id": "blessing-046",
+      "arabic": "الحمد لله الذي أعانني على ذكره",
+      "english": "Praise be to Allah who has helped me remember Him",
+      "transliteration": "Alhamdulillahi allathee a'ananee ala thikrihi",
+      "category": "guidance",
+      "tags": [
+        "remembrance",
+        "help",
+        "worship",
+        "spirituality"
+      ]
+    },
+    {
+      "id": "blessing-047",
+      "arabic": "الحمد لله الذي جعل لي قلباً يحبه",
+      "english": "Praise be to Allah who has given me a heart that loves Him",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee qalban yuhibbuhu",
+      "category": "guidance",
+      "tags": [
+        "love",
+        "heart",
+        "devotion",
+        "spirituality"
+      ]
+    },
+    {
+      "id": "blessing-048",
+      "arabic": "الحمد لله الذي رزقني التوبة",
+      "english": "Praise be to Allah who has blessed me with repentance",
+      "transliteration": "Alhamdulillahi allathee razaqanee at-tawbah",
+      "category": "guidance",
+      "tags": [
+        "repentance",
+        "forgiveness",
+        "return",
+        "guidance"
+      ]
+    },
+    {
+      "id": "blessing-049",
+      "arabic": "الحمد لله الذي جعل لي نعماً لا تحصى",
+      "english": "Praise be to Allah who has given me countless blessings",
+      "transliteration": "Alhamdulillahi allathee ja'ala lee ni'aman la tuhsa",
+      "category": "gratitude",
+      "tags": [
+        "countless",
+        "blessings",
+        "abundance",
+        "gratitude"
+      ]
+    },
+    {
+      "id": "blessing-050",
+      "arabic": "الحمد لله على كل حال",
+      "english": "Praise be to Allah in all circumstances",
+      "transliteration": "Alhamdulillahi ala kulli hal",
+      "category": "general",
+      "tags": [
+        "circumstances",
+        "all conditions",
+        "gratitude",
+        "acceptance"
+      ]
+    }
+  ]
+}
