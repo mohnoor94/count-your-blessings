@@ -184,7 +184,7 @@
 
 /* Screen reader support for Arabic */
 .blessing-arabic[lang="ar"] {
-  speak: normal;
+  /* Removed invalid 'speak' property - screen readers handle this automatically */
 }
 
 /* Ensure proper reading order */
@@ -232,10 +232,7 @@
 /* ===== FONT LOADING OPTIMIZATION ===== */
 
 /* Font display optimization for Arabic fonts */
-@font-face {
-  font-family: 'Amiri';
-  font-display: swap; /* Ensure text remains visible during font load */
-}
+/* Note: @font-face rules are handled by Google Fonts import */
 
 /* Fallback for when Arabic font is loading */
 .blessing-arabic {

@@ -199,6 +199,17 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.blessing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.blessing-card:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .blessing-card::before {
@@ -219,8 +230,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Base text styles */
 .blessing-arabic {
   font-family: var(--font-arabic);
   font-size: var(--text-2xl);
@@ -229,6 +244,9 @@ body {
   font-weight: 400;
   direction: rtl;
   text-align: right;
+  unicode-bidi: embed;
+  width: 100%;
+  transition: all var(--transition-normal);
 }
 
 .blessing-english {
@@ -239,6 +257,73 @@ body {
   font-weight: 400;
   direction: ltr;
   text-align: left;
+  unicode-bidi: embed;
+  width: 100%;
+  transition: all var(--transition-normal);
+}
+
+/* Language-specific layouts */
+.blessing-text.arabic-primary {
+  text-align: right;
+  direction: rtl;
+}
+
+.blessing-text.arabic-primary .blessing-arabic {
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  order: 1;
+}
+
+.blessing-text.arabic-primary .blessing-english {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  opacity: 0.8;
+  order: 2;
+  text-align: left;
+  direction: ltr;
+}
+
+.blessing-text.english-primary {
+  text-align: left;
+  direction: ltr;
+}
+
+.blessing-text.english-primary .blessing-english {
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  order: 1;
+}
+
+.blessing-text.english-primary .blessing-arabic {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  opacity: 0.8;
+  order: 2;
+  text-align: right;
+  direction: rtl;
+}
+
+/* Bilingual mode */
+.blessing-text.bilingual {
+  text-align: center;
+}
+
+.blessing-text.bilingual .blessing-arabic {
+  font-size: var(--text-2xl);
+  color: var(--text-arabic);
+  order: 1;
+  text-align: right;
+  direction: rtl;
+}
+
+.blessing-text.bilingual .blessing-english {
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+  order: 2;
+  text-align: left;
+  direction: ltr;
 }
 
 /* ===== BUTTONS ===== */
@@ -367,22 +452,81 @@ body {
 
 /* ===== RESPONSIVE DESIGN ===== */
 
-/* Large Mobile Devices */
+/* Small Mobile (320px - 479px) */
+@media (max-width: 479px) {
+  .blessing-card {
+    padding: var(--space-6);
+  }
+  
+  .blessing-text {
+    min-height: 100px;
+    gap: var(--space-4);
+  }
+  
+  .blessing-arabic {
+    font-size: var(--text-xl);
+    line-height: 1.7;
+  }
+  
+  .blessing-english {
+    font-size: var(--text-base);
+  }
+  
+  /* Language-specific responsive adjustments */
+  .blessing-text.arabic-primary .blessing-arabic {
+    font-size: var(--text-xl);
+  }
+  
+  .blessing-text.english-primary .blessing-english {
+    font-size: var(--text-xl);
+  }
+  
+  .blessing-text.bilingual .blessing-arabic {
+    font-size: var(--text-xl);
+  }
+  
+  .blessing-text.bilingual .blessing-english {
+    font-size: var(--text-base);
+  }
+}
+
+/* Large Mobile Devices (480px - 767px) */
 @media (min-width: 480px) {
   .blessing-card {
     padding: var(--space-10);
   }
   
+  .blessing-text {
+    min-height: 140px;
+  }
+  
   .blessing-arabic {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
   }
   
   .blessing-english {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
+  }
+  
+  /* Language-specific responsive adjustments */
+  .blessing-text.arabic-primary .blessing-arabic {
+    font-size: var(--text-3xl);
+  }
+  
+  .blessing-text.english-primary .blessing-english {
+    font-size: var(--text-3xl);
+  }
+  
+  .blessing-text.bilingual .blessing-arabic {
+    font-size: var(--text-2xl);
+  }
+  
+  .blessing-text.bilingual .blessing-english {
+    font-size: var(--text-lg);
   }
 }
 
-/* Tablets */
+/* Tablets (768px - 1023px) */
 @media (min-width: 768px) {
   .main-content {
     padding: var(--space-8);
@@ -393,6 +537,19 @@ body {
     padding: var(--space-12);
   }
   
+  .blessing-text {
+    min-height: 160px;
+  }
+  
+  .blessing-arabic {
+    font-size: var(--text-3xl);
+    line-height: 1.9;
+  }
+  
+  .blessing-english {
+    font-size: var(--text-xl);
+  }
+  
   .app-title {
     font-size: var(--text-2xl);
   }
@@ -400,9 +557,26 @@ body {
   .title-arabic {
     font-size: var(--text-xl);
   }
+  
+  /* Language-specific responsive adjustments */
+  .blessing-text.arabic-primary .blessing-arabic {
+    font-size: 2.25rem; /* 36px */
+  }
+  
+  .blessing-text.english-primary .blessing-english {
+    font-size: 2.25rem; /* 36px */
+  }
+  
+  .blessing-text.bilingual .blessing-arabic {
+    font-size: var(--text-3xl);
+  }
+  
+  .blessing-text.bilingual .blessing-english {
+    font-size: var(--text-xl);
+  }
 }
 
-/* Desktop */
+/* Desktop (1024px+) */
 @media (min-width: 1024px) {
   .app {
     max-width: 800px;
@@ -412,6 +586,43 @@ body {
   
   .blessing-card {
     max-width: 700px;
+    padding: var(--space-16);
+  }
+  
+  .blessing-text {
+    min-height: 180px;
+  }
+  
+  .blessing-arabic {
+    font-size: 2.5rem; /* 40px */
+    line-height: 2;
+  }
+  
+  .blessing-english {
+    font-size: var(--text-2xl);
+  }
+  
+  /* Language-specific responsive adjustments */
+  .blessing-text.arabic-primary .blessing-arabic {
+    font-size: 2.75rem; /* 44px */
+  }
+  
+  .blessing-text.english-primary .blessing-english {
+    font-size: 2.75rem; /* 44px */
+  }
+  
+  .blessing-text.bilingual .blessing-arabic {
+    font-size: 2.5rem; /* 40px */
+  }
+  
+  .blessing-text.bilingual .blessing-english {
+    font-size: var(--text-2xl);
+  }
+  
+  /* Enhanced hover effects on desktop */
+  .blessing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
   }
 }
 

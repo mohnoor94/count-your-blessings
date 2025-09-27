@@ -61,26 +61,118 @@
 /* ===== BLESSING CARD ANIMATIONS ===== */
 .blessing-card {
   animation: slideInUp var(--duration-slow) var(--ease-out);
+  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 .blessing-card.transitioning {
-  animation: fadeOut var(--duration-normal) var(--ease-in) forwards;
+  animation: blessingFadeOut var(--duration-normal) var(--ease-in) forwards;
 }
 
 .blessing-card.entering {
-  animation: fadeIn var(--duration-normal) var(--ease-out);
+  animation: blessingFadeIn var(--duration-normal) var(--ease-out);
+}
+
+/* Enhanced Blessing Card Animations */
+@keyframes blessingFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-10px) scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+@keyframes blessingFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(5px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Blessing Text Animations */
 .blessing-text {
   animation: fadeIn var(--duration-slower) var(--ease-out) 0.2s both;
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
+/* Language-specific text animations */
 .blessing-arabic {
-  animation: slideInDown var(--duration-slow) var(--ease-out) 0.1s both;
+  animation: slideInRight var(--duration-slow) var(--ease-out) 0.1s both;
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
 .blessing-english {
+  animation: slideInLeft var(--duration-slow) var(--ease-out) 0.3s both;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+/* RTL/LTR specific animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Language transition animations */
+.blessing-text.arabic-primary .blessing-arabic {
+  animation: emphasizeText var(--duration-normal) var(--ease-out);
+}
+
+.blessing-text.english-primary .blessing-english {
+  animation: emphasizeText var(--duration-normal) var(--ease-out);
+}
+
+@keyframes emphasizeText {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Bilingual mode animations */
+.blessing-text.bilingual .blessing-arabic {
+  animation: slideInDown var(--duration-slow) var(--ease-out) 0.1s both;
+}
+
+.blessing-text.bilingual .blessing-english {
   animation: slideInUp var(--duration-slow) var(--ease-out) 0.3s both;
 }
 
