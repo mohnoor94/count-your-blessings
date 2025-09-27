@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Switching Test</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/arabic.css">
+    <style>
+        body { padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .test-title { font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div id="app" class="app" data-language="english">
+        <div class="test-section">
+            <div class="test-title">Language Toggle Test</div>
+            <button class="language-toggle" id="languageToggle" aria-label="Switch language" data-language="arabic">
+                عربي
+            </button>
+            <p>Current Language: <span id="currentLang">English</span></p>
+            <p>Keyboard shortcut: Alt + L or Ctrl + Shift + L</p>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">Blessing Text Direction Test</div>
+            <div class="blessing-text" id="blessingText">
+                <p class="blessing-arabic" lang="ar" dir="rtl">الحمد لله رب العالمين</p>
+                <p class="blessing-english" lang="en" dir="ltr">Praise be to Allah, Lord of all the worlds</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">UI Elements Test</div>
+            <button class="new-blessing-btn" id="newBlessingBtn">
+                <span class="btn-text">New Blessing</span>
+                <span class="btn-icon">✨</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="assets/js/storage.js"></script>
+    <script src="assets/js/language.js"></script>
+    <script>
+        // Initialize storage and language managers
+        window.storageManager = new StorageManager();
+        window.storageManager.init();
+        
+        window.languageManager = new LanguageManager();
+        window.languageManager.init();
+        
+        // Update current language display
+        function updateCurrentLangDisplay() {
+            const currentLangSpan = document.getElementById('currentLang');
+            if (currentLangSpan && window.languageManager) {
+                currentLangSpan.textContent = window.languageManager.getCurrentLanguage();
+            }
+        }
+        
+        // Listen for language changes
+        document.addEventListener('languageChanged', (event) => {
+            console.log('Language changed:', event.detail);
+            updateCurrentLangDisplay();
+        });
+        
+        // Initial display update
+        updateCurrentLangDisplay();
+        
+        console.log('Language switching test initialized');
+    </script>
+</body>
+</html>

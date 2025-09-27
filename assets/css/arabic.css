@@ -12,11 +12,35 @@
 [dir="rtl"] {
   direction: rtl;
   text-align: right;
+  transition: all var(--transition-normal);
 }
 
 [dir="ltr"] {
   direction: ltr;
   text-align: left;
+  transition: all var(--transition-normal);
+}
+
+/* Enhanced RTL/LTR transitions */
+.app[data-language="arabic"] {
+  direction: rtl;
+  transition: direction var(--transition-normal);
+}
+
+.app[data-language="english"] {
+  direction: ltr;
+  transition: direction var(--transition-normal);
+}
+
+/* Header content direction handling */
+.app[data-language="arabic"] .header-content {
+  flex-direction: row-reverse;
+  transition: flex-direction var(--transition-normal);
+}
+
+.app[data-language="english"] .header-content {
+  flex-direction: row;
+  transition: flex-direction var(--transition-normal);
 }
 
 /* ===== ARABIC TEXT STYLING ===== */
@@ -55,35 +79,77 @@
 /* ===== LANGUAGE-SPECIFIC LAYOUTS ===== */
 
 /* When Arabic is primary language */
-.app[data-language="arabic"] {
+.app[data-language="arabic"] .blessing-text {
+  text-align: right;
   direction: rtl;
 }
 
-.app[data-language="arabic"] .header-content {
-  flex-direction: row-reverse;
-}
-
-.app[data-language="arabic"] .blessing-text {
-  text-align: right;
+.app[data-language="arabic"] .blessing-arabic {
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  opacity: 1;
+  order: 1;
+  margin-bottom: var(--space-4);
 }
 
 .app[data-language="arabic"] .blessing-english {
   text-align: left;
-  margin-top: var(--space-4);
+  direction: ltr;
   font-size: var(--text-base);
+  color: var(--text-secondary);
   opacity: 0.8;
+  order: 2;
 }
 
 /* When English is primary language */
-.app[data-language="english"] .blessing-arabic {
-  font-size: var(--text-xl);
-  opacity: 0.8;
-  margin-bottom: var(--space-4);
+.app[data-language="english"] .blessing-text {
+  text-align: left;
+  direction: ltr;
 }
 
 .app[data-language="english"] .blessing-english {
   font-size: var(--text-2xl);
   color: var(--text-primary);
+  opacity: 1;
+  order: 1;
+  margin-bottom: var(--space-4);
+}
+
+.app[data-language="english"] .blessing-arabic {
+  text-align: right;
+  direction: rtl;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  opacity: 0.8;
+  order: 2;
+}
+
+/* Language toggle button styling based on current language */
+.app[data-language="arabic"] .language-toggle {
+  font-family: var(--font-english);
+  direction: ltr;
+}
+
+.app[data-language="english"] .language-toggle {
+  font-family: var(--font-arabic-stack);
+  direction: rtl;
+}
+
+/* Smooth transitions for language switching */
+.app[data-language="arabic"] .blessing-text,
+.app[data-language="english"] .blessing-text {
+  transition: text-align var(--transition-normal), direction var(--transition-normal);
+}
+
+.app[data-language="arabic"] .blessing-arabic,
+.app[data-language="arabic"] .blessing-english,
+.app[data-language="english"] .blessing-arabic,
+.app[data-language="english"] .blessing-english {
+  transition: font-size var(--transition-normal), 
+              color var(--transition-normal),
+              opacity var(--transition-normal),
+              order var(--transition-normal),
+              margin var(--transition-normal);
 }
 
 /* ===== RESPONSIVE ARABIC TYPOGRAPHY ===== */

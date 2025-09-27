@@ -6,12 +6,10 @@
 class BlessingReminderApp {
   constructor() {
     this.isInitialized = false;
-    this.currentLanguage = 'english';
     this.loadingScreen = null;
 
     // Bind methods
     this.init = this.init.bind(this);
-    this.handleLanguageToggle = this.handleLanguageToggle.bind(this);
     this.handleNewBlessing = this.handleNewBlessing.bind(this);
     this.handleHistoryView = this.handleHistoryView.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
@@ -39,6 +37,9 @@ class BlessingReminderApp {
 
       // Set up event listeners
       this.setupEventListeners();
+      
+      // Set up language change listener
+      this.setupLanguageChangeListener();
 
       // Load user preferences
       this.loadUserPreferences();
@@ -66,7 +67,7 @@ class BlessingReminderApp {
    */
   async initializeModules() {
     // Wait for other modules to be available
-    await this.waitForModules(['BlessingManager', 'StorageManager', 'LanguageManager']);
+    await this.waitForModules(['BlessingManager', 'StorageManager', 'ContentLanguageManager']);
 
     // Initialize modules
     if (window.BlessingManager) {
@@ -79,9 +80,9 @@ class BlessingReminderApp {
       window.storageManager.init();
     }
 
-    if (window.LanguageManager) {
-      window.languageManager = new window.LanguageManager();
-      window.languageManager.init();
+    if (window.ContentLanguageManager) {
+      window.contentLanguageManager = new window.ContentLanguageManager();
+      window.contentLanguageManager.init();
     }
   }
 
@@ -112,12 +113,8 @@ class BlessingReminderApp {
    * Set up event listeners for UI interactions
    */
   setupEventListeners() {
-    // Language toggle
-    const languageToggle = document.getElementById('languageToggle');
-    if (languageToggle) {
-      languageToggle.addEventListener('click', this.handleLanguageToggle);
-    }
-
+    // Note: Content language selection is handled by ContentLanguageManager
+    
     // New blessing button
     const newBlessingBtn = document.getElementById('newBlessingBtn');
     if (newBlessingBtn) {
@@ -156,12 +153,6 @@ class BlessingReminderApp {
     if (window.storageManager) {
       const preferences = window.storageManager.getPreferences();
 
-      // Set language preference
-      if (preferences.language) {
-        this.currentLanguage = preferences.language;
-        this.updateLanguageUI();
-      }
-
       // Apply theme preference
       if (preferences.theme) {
         this.applyTheme(preferences.theme);
@@ -182,8 +173,9 @@ class BlessingReminderApp {
           this.displayBlessing(blessing);
 
           // Add to history
-          if (window.storageManager) {
-            window.storageManager.addToHistory(blessing.id, this.currentLanguage);
+          if (window.storageManager && window.contentLanguageManager) {
+            const contentLang = window.contentLanguageManager.getContentLanguage();
+            window.storageManager.addToHistory(blessing.id, contentLang);
           }
         }
       } catch (error) {
@@ -213,30 +205,7 @@ class BlessingReminderApp {
     }
   }
 
-  /**
-   * Handle language toggle
-   */
-  handleLanguageToggle() {
-    if (!this.isInitialized) return;
-
-    // Toggle between Arabic and English
-    this.currentLanguage = this.currentLanguage === 'arabic' ? 'english' : 'arabic';
-
-    // Update UI
-    this.updateLanguageUI();
-
-    // Save preference
-    if (window.storageManager) {
-      window.storageManager.savePreference('language', this.currentLanguage);
-    }
-
-    // Update language manager
-    if (window.languageManager) {
-      window.languageManager.setLanguage(this.currentLanguage);
-    }
-
-    console.log('Language switched to:', this.currentLanguage);
-  }
+  // Language toggle is now handled by ContentLanguageManager
 
   /**
    * Handle new blessing request
@@ -260,8 +229,9 @@ class BlessingReminderApp {
         this.displayBlessing(blessing);
 
         // Add to history
-        if (window.storageManager) {
-          window.storageManager.addToHistory(blessing.id, this.currentLanguage);
+        if (window.storageManager && window.contentLanguageManager) {
+          const contentLang = window.contentLanguageManager.getContentLanguage();
+          window.storageManager.addToHistory(blessing.id, contentLang);
         }
       }
 
@@ -317,82 +287,13 @@ class BlessingReminderApp {
   }
 
   /**
-   * Update blessing display based on current language and content
+   * Update blessing display based on current content language
    */
   updateBlessingDisplay(blessing) {
-    const blessingText = document.querySelector('.blessing-text');
-    const arabicText = document.querySelector('.blessing-arabic');
-    const englishText = document.querySelector('.blessing-english');
-    const app = document.getElementById('app');
-
-    if (!blessingText || !arabicText || !englishText || !app) return;
-
-    // Reset classes
-    blessingText.classList.remove('bilingual', 'arabic-only', 'english-only');
-    arabicText.style.display = '';
-    englishText.style.display = '';
-
-    // Set proper text direction and display based on language preference
-    switch (this.currentLanguage) {
-      case 'arabic':
-        // Arabic primary, English secondary
-        blessingText.classList.add('arabic-primary');
-        arabicText.style.fontSize = 'var(--text-2xl)';
-        arabicText.style.color = 'var(--text-primary)';
-        arabicText.style.marginBottom = 'var(--space-4)';
-
-        if (blessing.english) {
-          englishText.style.fontSize = 'var(--text-base)';
-          englishText.style.color = 'var(--text-secondary)';
-          englishText.style.opacity = '0.8';
-        } else {
-          englishText.style.display = 'none';
-        }
-
-        // Set RTL direction for the container
-        blessingText.setAttribute('dir', 'rtl');
-        break;
-
-      case 'english':
-        // English primary, Arabic secondary
-        blessingText.classList.add('english-primary');
-        englishText.style.fontSize = 'var(--text-2xl)';
-        englishText.style.color = 'var(--text-primary)';
-        englishText.style.marginBottom = 'var(--space-4)';
-
-        if (blessing.arabic) {
-          arabicText.style.fontSize = 'var(--text-base)';
-          arabicText.style.color = 'var(--text-secondary)';
-          arabicText.style.opacity = '0.8';
-        } else {
-          arabicText.style.display = 'none';
-        }
-
-        // Set LTR direction for the container
-        blessingText.setAttribute('dir', 'ltr');
-        break;
-
-      default:
-        // Both languages equal (bilingual mode)
-        blessingText.classList.add('bilingual');
-        blessingText.removeAttribute('dir');
-
-        arabicText.style.fontSize = 'var(--text-2xl)';
-        englishText.style.fontSize = 'var(--text-lg)';
-        arabicText.style.color = 'var(--text-arabic)';
-        englishText.style.color = 'var(--text-primary)';
-        arabicText.style.opacity = '1';
-        englishText.style.opacity = '1';
+    // Let the content language manager handle the display logic
+    if (window.contentLanguageManager) {
+      window.contentLanguageManager.updateContentDisplay();
     }
-
-    // Ensure proper text direction for individual elements
-    arabicText.setAttribute('dir', 'rtl');
-    arabicText.setAttribute('lang', 'ar');
-    englishText.setAttribute('dir', 'ltr');
-    englishText.setAttribute('lang', 'en');
-
-    // Update app language attribute
-    app.setAttribute('data-language', this.currentLanguage);
   }
 
   /**
@@ -417,19 +318,27 @@ class BlessingReminderApp {
     this.showComingSoon('Settings feature coming soon!');
   }
 
+  // UI language is now always English - no need to update
+  
   /**
-   * Update language UI elements
+   * Refresh blessing display with current language settings
    */
-  updateLanguageUI() {
-    const app = document.getElementById('app');
-    const languageToggle = document.getElementById('languageToggle');
-
-    if (app) {
-      app.setAttribute('data-language', this.currentLanguage);
-    }
-
-    if (languageToggle) {
-      languageToggle.textContent = this.currentLanguage === 'arabic' ? 'English' : 'عربي';
+  refreshBlessingDisplay() {
+    const blessingCard = document.getElementById('blessingCard');
+    const arabicText = document.querySelector('.blessing-arabic');
+    const englishText = document.querySelector('.blessing-english');
+    
+    if (!blessingCard || !arabicText || !englishText) return;
+    
+    // Get current blessing text
+    const currentBlessing = {
+      arabic: arabicText.textContent,
+      english: englishText.textContent
+    };
+    
+    // Re-display with new content language settings
+    if (window.contentLanguageManager) {
+      window.contentLanguageManager.updateContentDisplay();
     }
   }
 
@@ -630,6 +539,29 @@ class BlessingReminderApp {
     // Optionally trigger new blessing or other action
     // For now, just provide visual feedback
     console.log('Blessing card tapped');
+  }
+  
+  /**
+   * Set up content language change event listener
+   */
+  setupLanguageChangeListener() {
+    document.addEventListener('contentLanguageChanged', (event) => {
+      const { previousLanguage, currentLanguage } = event.detail;
+      
+      console.log(`Content language changed from ${previousLanguage} to ${currentLanguage}`);
+      
+      // Refresh current blessing display with new content language
+      this.refreshBlessingDisplay();
+    });
+  }
+  
+  /**
+   * Update content language dependent elements
+   */
+  updateLanguageDependentElements() {
+    // UI stays in English - only content language changes
+    // This method is kept for compatibility but doesn't need to do anything
+    console.log('Content language updated');
   }
 }
 

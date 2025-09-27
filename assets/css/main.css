@@ -149,28 +149,44 @@ body {
   color: var(--text-arabic);
 }
 
-/* ===== LANGUAGE TOGGLE ===== */
-.language-toggle {
-  background: var(--primary-green);
-  color: white;
-  border: none;
-  border-radius: var(--radius-lg);
-  padding: var(--space-2) var(--space-4);
+/* ===== CONTENT LANGUAGE SELECTOR ===== */
+.content-language-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.selector-label {
   font-size: var(--text-sm);
+  color: var(--text-secondary);
   font-weight: 500;
+}
+
+.language-select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all var(--transition-normal);
-  min-width: 60px;
-  min-height: 44px;
+  min-width: 80px;
 }
 
-.language-toggle:hover {
-  background: #1e3d1a;
-  transform: translateY(-1px);
+.language-select:hover {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(45, 90, 39, 0.1);
 }
 
-.language-toggle:active {
-  transform: translateY(0);
+.language-select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.2);
+}
+
+.language-select option {
+  padding: var(--space-2);
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -262,68 +278,50 @@ body {
   transition: all var(--transition-normal);
 }
 
-/* Language-specific layouts */
-.blessing-text.arabic-primary {
-  text-align: right;
-  direction: rtl;
-}
+/* Content Language Display Modes */
 
-.blessing-text.arabic-primary .blessing-arabic {
-  font-size: var(--text-2xl);
-  color: var(--text-primary);
-  margin-bottom: var(--space-4);
-  order: 1;
-}
-
-.blessing-text.arabic-primary .blessing-english {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  opacity: 0.8;
-  order: 2;
-  text-align: left;
-  direction: ltr;
-}
-
-.blessing-text.english-primary {
-  text-align: left;
-  direction: ltr;
-}
-
-.blessing-text.english-primary .blessing-english {
-  font-size: var(--text-2xl);
-  color: var(--text-primary);
-  margin-bottom: var(--space-4);
-  order: 1;
-}
-
-.blessing-text.english-primary .blessing-arabic {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  opacity: 0.8;
-  order: 2;
-  text-align: right;
-  direction: rtl;
-}
-
-/* Bilingual mode */
-.blessing-text.bilingual {
+/* Arabic Content Only */
+.blessing-text.content-arabic {
   text-align: center;
 }
 
-.blessing-text.bilingual .blessing-arabic {
+.blessing-text.content-arabic .blessing-arabic {
   font-size: var(--text-2xl);
-  color: var(--text-arabic);
-  order: 1;
-  text-align: right;
-  direction: rtl;
+  color: var(--text-primary);
+  text-align: center;
 }
 
-.blessing-text.bilingual .blessing-english {
+/* English Content Only */
+.blessing-text.content-english {
+  text-align: center;
+}
+
+.blessing-text.content-english .blessing-english {
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+/* Both Languages Content */
+.blessing-text.content-both {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.blessing-text.content-both .blessing-arabic {
+  font-size: var(--text-2xl);
+  color: var(--text-arabic);
+  text-align: center;
+  order: 1;
+}
+
+.blessing-text.content-both .blessing-english {
   font-size: var(--text-lg);
   color: var(--text-primary);
+  text-align: center;
   order: 2;
-  text-align: left;
-  direction: ltr;
 }
 
 /* ===== BUTTONS ===== */
@@ -472,20 +470,17 @@ body {
     font-size: var(--text-base);
   }
   
-  /* Language-specific responsive adjustments */
-  .blessing-text.arabic-primary .blessing-arabic {
+  /* Language mode responsive adjustments */
+  .blessing-text.arabic-only .blessing-arabic,
+  .blessing-text.english-only .blessing-english {
     font-size: var(--text-xl);
   }
   
-  .blessing-text.english-primary .blessing-english {
+  .blessing-text.both-languages .blessing-arabic {
     font-size: var(--text-xl);
   }
   
-  .blessing-text.bilingual .blessing-arabic {
-    font-size: var(--text-xl);
-  }
-  
-  .blessing-text.bilingual .blessing-english {
+  .blessing-text.both-languages .blessing-english {
     font-size: var(--text-base);
   }
 }
@@ -508,20 +503,17 @@ body {
     font-size: var(--text-lg);
   }
   
-  /* Language-specific responsive adjustments */
-  .blessing-text.arabic-primary .blessing-arabic {
+  /* Language mode responsive adjustments */
+  .blessing-text.arabic-only .blessing-arabic,
+  .blessing-text.english-only .blessing-english {
     font-size: var(--text-3xl);
   }
   
-  .blessing-text.english-primary .blessing-english {
-    font-size: var(--text-3xl);
-  }
-  
-  .blessing-text.bilingual .blessing-arabic {
+  .blessing-text.both-languages .blessing-arabic {
     font-size: var(--text-2xl);
   }
   
-  .blessing-text.bilingual .blessing-english {
+  .blessing-text.both-languages .blessing-english {
     font-size: var(--text-lg);
   }
 }
@@ -626,11 +618,71 @@ body {
   }
 }
 
+/* ===== LANGUAGE SWITCHING TRANSITIONS ===== */
+
+/* Smooth transitions during language switching */
+.language-transitioning * {
+  transition: all var(--transition-normal) !important;
+}
+
+.language-transitioning .blessing-text {
+  transition: all var(--transition-slow) !important;
+}
+
+.language-transitioning .blessing-arabic,
+.language-transitioning .blessing-english {
+  transition: font-size var(--transition-normal), 
+              color var(--transition-normal),
+              opacity var(--transition-normal),
+              order var(--transition-normal) !important;
+}
+
+/* Font switching transitions */
+.font-arabic .blessing-arabic {
+  font-family: var(--font-arabic);
+}
+
+.font-english .blessing-english {
+  font-family: var(--font-english);
+}
+
+/* Text direction transitions */
+[dir="rtl"] {
+  transition: text-align var(--transition-normal);
+}
+
+[dir="ltr"] {
+  transition: text-align var(--transition-normal);
+}
+
+/* Language-specific text reflow */
+.blessing-text[dir="rtl"] {
+  text-align: right;
+}
+
+.blessing-text[dir="ltr"] {
+  text-align: left;
+}
+
+/* Smooth font family transitions */
+.blessing-arabic {
+  transition: font-family var(--transition-normal),
+              font-size var(--transition-normal),
+              color var(--transition-normal),
+              opacity var(--transition-normal);
+}
+
+.blessing-english {
+  transition: font-family var(--transition-normal),
+              font-size var(--transition-normal),
+              color var(--transition-normal),
+              opacity var(--transition-normal);
+}
+
 /* ===== ACCESSIBILITY ===== */
 
 /* Focus Styles */
-button:focus-visible,
-.language-toggle:focus-visible {
+button:focus-visible {
   outline: 2px solid var(--primary-green);
   outline-offset: 2px;
 }
