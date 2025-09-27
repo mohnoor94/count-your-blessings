@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Daily reminders of life's blessings - A spiritual PWA to help you reflect and say Alhamdulillah">
+    <meta name="keywords" content="blessings, gratitude, spiritual, Islamic, Alhamdulillah, mindfulness">
+    <meta name="author" content="Blessing Reminder">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2D5A27">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Blessings">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="assets/css/main.css" as="style">
+    <link rel="preload" href="assets/js/app.js" as="script">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/arabic.css">
+    
+    <title>Blessing Reminder - Alhamdulillah</title>
+</head>
+<body>
+    <!-- App Shell -->
+    <div id="app" class="app">
+        <!-- Header -->
+        <header class="header" role="banner">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="title-english">Blessing Reminder</span>
+                    <span class="title-arabic" lang="ar">تذكير النعم</span>
+                </h1>
+                <button class="language-toggle" id="languageToggle" aria-label="Switch language">
+                    <span class="toggle-label">عربي</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content" role="main">
+            <!-- Blessing Card Container -->
+            <section class="blessing-section" aria-live="polite">
+                <div class="blessing-card" id="blessingCard">
+                    <div class="blessing-content">
+                        <div class="blessing-text" id="blessingText">
+                            <p class="blessing-arabic" lang="ar" dir="rtl">الحمد لله رب العالمين</p>
+                            <p class="blessing-english" lang="en" dir="ltr">Praise be to Allah, Lord of all the worlds</p>
+                        </div>
+                    </div>
+                    <button class="new-blessing-btn" id="newBlessingBtn" aria-label="Get new blessing">
+                        <span class="btn-text">New Blessing</span>
+                        <span class="btn-icon">✨</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <button class="nav-btn" id="historyBtn" aria-label="View blessing history">
+                <span class="nav-icon">📖</span>
+                <span class="nav-label">History</span>
+            </button>
+            <button class="nav-btn" id="settingsBtn" aria-label="Open settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Settings</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading blessings...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="assets/js/app.js" defer></script>
+    <script src="assets/js/blessings.js" defer></script>
+    <script src="assets/js/storage.js" defer></script>
+    <script src="assets/js/language.js" defer></script>
+</body>
+</html>
