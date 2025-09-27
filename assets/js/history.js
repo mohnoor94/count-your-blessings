@@ -79,7 +79,7 @@ class HistoryManager {
 
     toggleSearchPanel() {
         this.isSearchPanelVisible = !this.isSearchPanelVisible;
-        
+
         if (this.elements.historySearchPanel) {
             if (this.isSearchPanelVisible) {
                 this.elements.historySearchPanel.classList.add('active');
@@ -98,7 +98,7 @@ class HistoryManager {
 
     toggleHistoryVisibility() {
         this.isHistoryCollapsed = !this.isHistoryCollapsed;
-        
+
         if (this.elements.historyContainer) {
             if (this.isHistoryCollapsed) {
                 this.elements.historyContainer.classList.add('collapsed');
@@ -127,7 +127,7 @@ class HistoryManager {
 
     handleSearchInput(query) {
         this.currentSearchQuery = query.toLowerCase();
-        
+
         // Show/hide clear button
         if (this.elements.historySearchClear) {
             if (query.length > 0) {
@@ -136,7 +136,7 @@ class HistoryManager {
                 this.elements.historySearchClear.classList.remove('visible');
             }
         }
-        
+
         // Update display with debouncing
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
@@ -159,7 +159,7 @@ class HistoryManager {
 
     updateDisplay() {
         if (!this.elements.historyContainer || !window.blessingsManager) return;
-        
+
         const history = this.getFilteredHistory();
         this.renderHistory(history);
         this.updateStats(history);
@@ -167,37 +167,37 @@ class HistoryManager {
 
     getFilteredHistory() {
         if (!window.blessingsManager) return [];
-        
+
         let history = window.blessingsManager.getHistory();
-        
+
         // Apply search filter - search in all languages and fields
         if (this.currentSearchQuery) {
-            history = history.filter(blessing => 
+            history = history.filter(blessing =>
                 blessing.english.toLowerCase().includes(this.currentSearchQuery) ||
                 blessing.arabic.includes(this.currentSearchQuery) ||
                 blessing.category.toLowerCase().includes(this.currentSearchQuery) ||
                 (blessing.transliteration && blessing.transliteration.toLowerCase().includes(this.currentSearchQuery)) ||
-                (blessing.tags && blessing.tags.some(tag => 
+                (blessing.tags && blessing.tags.some(tag =>
                     tag.toLowerCase().includes(this.currentSearchQuery)
                 ))
             );
         }
-        
+
         // Sort by timestamp (newest first)
         return history.sort((a, b) => b.timestamp - a.timestamp);
     }
 
     renderHistory(history) {
         if (!this.elements.historyContainer) return;
-        
+
         // Clear existing content
         this.elements.historyContainer.innerHTML = '';
-        
+
         if (history.length === 0) {
             this.renderEmptyState();
             return;
         }
-        
+
         // Render history items
         history.forEach((blessing, index) => {
             const card = this.createHistoryCard(blessing, index);
@@ -213,9 +213,9 @@ class HistoryManager {
                 <path d="M12 2v20m8-10H4"></path>
             </svg>
             <div class="history-empty-text">
-                ${this.currentSearchQuery 
-                    ? 'No blessings found matching your search.' 
-                    : 'Your blessing history will appear here as you explore.'}
+                ${this.currentSearchQuery
+                ? 'No blessings found matching your search.'
+                : 'Your blessing history will appear here as you explore.'}
             </div>
         `;
         this.elements.historyContainer.appendChild(emptyState);
@@ -225,15 +225,15 @@ class HistoryManager {
         const card = document.createElement('div');
         card.className = `history-card slide-in-up ${blessing.marked ? 'marked' : ''}`;
         card.style.animationDelay = `${index * 50}ms`;
-        
+
         const timestamp = new Date(blessing.timestamp);
         const timeString = this.formatTimestamp(timestamp);
-        
+
         // Get current language for display
-        const currentLanguage = window.languageManager 
-            ? window.languageManager.getCurrentLanguage() 
+        const currentLanguage = window.languageManager
+            ? window.languageManager.getCurrentLanguage()
             : 'both';
-        
+
         card.innerHTML = `
             <div class="history-card-header">
                 <div class="history-card-info">
@@ -261,29 +261,29 @@ class HistoryManager {
                 </div>
             </div>
             <div class="history-card-content">
-                ${this.shouldShowLanguage('ar', currentLanguage, blessing.language) 
-                    ? `<p class="blessing-arabic" lang="ar" dir="rtl">${blessing.arabic}</p>` 
-                    : ''}
-                ${this.shouldShowLanguage('en', currentLanguage, blessing.language) 
-                    ? `<p class="blessing-english" lang="en" dir="ltr">${blessing.english}</p>` 
-                    : ''}
+                ${this.shouldShowLanguage('ar', currentLanguage, blessing.language)
+                ? `<p class="blessing-arabic" lang="ar" dir="rtl">${blessing.arabic}</p>`
+                : ''}
+                ${this.shouldShowLanguage('en', currentLanguage, blessing.language)
+                ? `<p class="blessing-english" lang="en" dir="ltr">${blessing.english}</p>`
+                : ''}
                 <div class="history-card-category">${blessing.category}</div>
             </div>
         `;
-        
+
         // Add event listeners
         this.setupCardEventListeners(card);
-        
+
         return card;
     }
 
     shouldShowLanguage(language, currentLanguage, blessingLanguage) {
         // Always show both languages when 'both' is selected
         if (currentLanguage === 'both') return true;
-        
+
         // Show the specific language when it's selected
         if (currentLanguage === language) return true;
-        
+
         return false;
     }
 
@@ -299,7 +299,7 @@ class HistoryManager {
                 );
             });
         }
-        
+
         // Delete button
         const deleteBtn = card.querySelector('.delete');
         if (deleteBtn) {
@@ -311,7 +311,7 @@ class HistoryManager {
                 );
             });
         }
-        
+
         // Card click to show blessing
         card.addEventListener('click', () => {
             const blessingId = card.querySelector('[data-blessing-id]').dataset.blessingId;
@@ -321,17 +321,17 @@ class HistoryManager {
 
     toggleFavorite(blessingId, timestamp) {
         if (!window.blessingsManager) return;
-        
+
         // Find the blessing in history
         const history = window.blessingsManager.getHistory();
-        const blessing = history.find(b => 
+        const blessing = history.find(b =>
             b.id === blessingId && b.timestamp === timestamp
         );
-        
+
         if (blessing) {
             const newMarkedState = !blessing.marked;
             window.blessingsManager.markBlessingInHistory(blessingId, newMarkedState);
-            
+
             // Show notification
             if (window.showNotification) {
                 window.showNotification(
@@ -344,12 +344,12 @@ class HistoryManager {
 
     showBlessingFromHistory(blessingId) {
         if (!window.blessingsManager) return;
-        
+
         const blessing = window.blessingsManager.getBlessingById(blessingId);
         if (blessing && window.alhamdulillahApp) {
             // Update the current blessing display
             window.alhamdulillahApp.updateBlessingContent(blessing);
-            
+
             // Update the current index
             const allBlessings = window.blessingsManager.blessings;
             const index = allBlessings.findIndex(b => b.id === blessingId);
@@ -357,7 +357,7 @@ class HistoryManager {
                 window.blessingsManager.currentIndex = index;
                 window.alhamdulillahApp.updateBlessingNumber();
             }
-            
+
             // Show notification
             if (window.showNotification) {
                 window.showNotification('Blessing restored from history', 'info');
@@ -398,37 +398,37 @@ class HistoryManager {
                 </div>
             </div>
         `;
-        
+
         // Add event listeners
         const cancelBtn = dialog.querySelector('.cancel-btn');
         const confirmBtn = dialog.querySelector('.confirm-btn');
-        
+
         const closeDialog = () => {
             dialog.classList.remove('active');
             setTimeout(() => dialog.remove(), 300);
         };
-        
+
         cancelBtn.addEventListener('click', closeDialog);
         confirmBtn.addEventListener('click', () => {
             onConfirm();
             closeDialog();
         });
-        
+
         // Close on backdrop click
         dialog.addEventListener('click', (e) => {
             if (e.target === dialog) {
                 closeDialog();
             }
         });
-        
+
         return dialog;
     }
 
     deleteFromHistory(blessingId, timestamp) {
         if (!window.blessingsManager) return;
-        
+
         window.blessingsManager.removeFromHistory(blessingId, timestamp);
-        
+
         if (window.showNotification) {
             window.showNotification('Blessing removed from history', 'info');
         }
@@ -436,22 +436,48 @@ class HistoryManager {
 
     clearAllHistory() {
         if (!window.blessingsManager) return;
-        
+
         window.blessingsManager.clearHistory();
-        
-        if (window.showNotification) {
-            window.showNotification('History cleared successfully', 'info');
-        }
+        // Note: Notification is handled by blessingsManager.clearHistory()
     }
 
     updateStats(history) {
         if (!this.elements.statsTotal || !this.elements.statsFavorites) return;
-        
+
         const total = history.length;
         const favorites = history.filter(b => b.marked).length;
-        
+
         this.elements.statsTotal.textContent = total;
         this.elements.statsFavorites.textContent = favorites;
+
+        // Add frequency stats if available
+        if (window.blessingsManager && window.blessingsManager.isLoaded) {
+            const freqStats = window.blessingsManager.getFrequencyStats();
+
+            // Create or update frequency info element
+            let freqInfo = document.getElementById('frequency-info');
+            if (!freqInfo) {
+                freqInfo = document.createElement('div');
+                freqInfo.id = 'frequency-info';
+                freqInfo.className = 'frequency-stats';
+                if (this.elements.historyStats) {
+                    this.elements.historyStats.appendChild(freqInfo);
+                }
+            }
+
+            if (freqInfo) {
+                freqInfo.innerHTML = `
+                    <div class="frequency-stat">
+                        <span class="stat-label">Unseen:</span>
+                        <span class="stat-value">${freqStats.neverViewed}</span>
+                    </div>
+                    <div class="frequency-stat">
+                        <span class="stat-label">Avg views:</span>
+                        <span class="stat-value">${freqStats.averageViews.toFixed(1)}</span>
+                    </div>
+                `;
+            }
+        }
     }
 
     extractBlessingNumber(id) {
@@ -466,12 +492,12 @@ class HistoryManager {
         const diffMins = Math.floor(diffMs / 60000);
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
-        
+
         if (diffMins < 1) return 'Just now';
         if (diffMins < 60) return `${diffMins}m ago`;
         if (diffHours < 24) return `${diffHours}h ago`;
         if (diffDays < 7) return `${diffDays}d ago`;
-        
+
         return date.toLocaleDateString();
     }
 

@@ -273,6 +273,56 @@ class BlessingStorage {
         }
     }
 
+    // Frequency Weights Management
+    getFrequencyWeights() {
+        if (!this.storageAvailable) {
+            return {};
+        }
+        
+        try {
+            const weights = localStorage.getItem('alhamdulillah-frequency-weights');
+            if (!weights) return {};
+            
+            const parsed = JSON.parse(weights);
+            // Validate weights structure
+            if (typeof parsed !== 'object' || parsed === null) {
+                console.warn('Invalid frequency weights structure, resetting to empty object');
+                this.setFrequencyWeights({});
+                return {};
+            }
+            
+            return parsed;
+        } catch (error) {
+            console.warn('Error reading frequency weights from localStorage:', error);
+            this.handleCorruptedData('frequency weights');
+            return {};
+        }
+    }
+
+    setFrequencyWeights(weights) {
+        if (!this.storageAvailable) {
+            return false;
+        }
+        
+        try {
+            if (typeof weights !== 'object' || weights === null) {
+                console.error('Frequency weights must be an object');
+                return false;
+            }
+            
+            localStorage.setItem('alhamdulillah-frequency-weights', JSON.stringify(weights));
+            return true;
+        } catch (error) {
+            console.warn('Error writing frequency weights to localStorage:', error);
+            this.handleStorageError(error);
+            return false;
+        }
+    }
+
+    clearFrequencyWeights() {
+        return this.setFrequencyWeights({});
+    }
+
     setHistory(history) {
         if (!this.storageAvailable) {
             return false;
@@ -417,6 +467,9 @@ class BlessingStorage {
             case 'app data':
                 this.setData(this.defaultData);
                 break;
+            case 'frequency weights':
+                this.clearFrequencyWeights();
+                break;
         }
         
         if (typeof window !== 'undefined' && window.showNotification) {
@@ -518,7 +571,8 @@ class BlessingStorage {
         
         const success = this.setData(this.defaultData) && 
                        this.setPreferences(this.defaultPreferences) && 
-                       this.clearHistory();
+                       this.clearHistory() &&
+                       this.clearFrequencyWeights();
         
         if (success && typeof window !== 'undefined' && window.showNotification) {
             window.showNotification('All data has been reset to defaults.', 'info');

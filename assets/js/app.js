@@ -70,6 +70,10 @@ class AlhamdulillahApp {
             this.handleBlessingsLoaded(e.detail);
         });
 
+        document.addEventListener('blessingsLoadError', (e) => {
+            this.handleBlessingsLoadError(e.detail);
+        });
+
 
 
         // Keyboard shortcuts
@@ -127,7 +131,7 @@ class AlhamdulillahApp {
     }
 
     displayCurrentBlessing() {
-        if (window.blessingsManager) {
+        if (window.blessingsManager && window.blessingsManager.isLoaded) {
             const blessing = window.blessingsManager.getCurrentBlessing();
             if (blessing) {
                 this.updateBlessingContent(blessing);
@@ -136,15 +140,10 @@ class AlhamdulillahApp {
             }
         }
         
-        // Fallback: use simple embedded blessing
-        const fallbackBlessing = {
-            english: "For the gift of sight to see the world's colors",
-            arabic: "لنعمة البصر لرؤية ألوان العالم"
-        };
-        this.updateBlessingContent(fallbackBlessing);
-        if (this.elements.blessingNumber) {
-            this.elements.blessingNumber.textContent = '#1';
-        }
+        // If no blessings are loaded, show error state
+        console.error('No blessings available to display');
+        this.showCriticalError('No Blessings Available', 
+            'Unable to load blessing data. Please refresh the page.');
     }
 
     updateBlessingContent(blessing) {
@@ -182,15 +181,14 @@ class AlhamdulillahApp {
         this.triggerGlowEffect();
 
         // Request new blessing
-        if (window.blessingsManager) {
+        if (window.blessingsManager && window.blessingsManager.isLoaded) {
             console.log('Requesting new blessing...');
             const newBlessing = window.blessingsManager.getNewBlessing();
             console.log('New blessing received:', newBlessing);
             // History display is automatically updated by the HistoryManager
         } else {
-            console.log('blessingsManager not available, using simple fallback');
-            // Simple fallback with embedded blessings
-            this.handleSimpleBlessingChange();
+            console.error('BlessingsManager not available or not loaded');
+            this.showNotification('Blessings not loaded yet. Please wait or refresh the page.', 'error');
         }
     }
 
@@ -225,6 +223,25 @@ class AlhamdulillahApp {
     handleBlessingsLoaded(detail) {
         console.log(`Loaded ${detail.count} blessings in ${detail.categories.length} categories`);
         this.displayCurrentBlessing();
+    }
+
+    handleBlessingsLoadError(detail) {
+        console.error('Failed to load blessings:', detail.error);
+        
+        // Show error message to user but allow retry
+        this.showCriticalError('Unable to Load Full Blessing Collection', 
+            'The app is running in offline mode with limited blessings. Check your connection and refresh to access the full collection.');
+        
+        // Keep loading screen visible but make it less critical
+        if (this.elements.loadingScreen) {
+            this.elements.loadingScreen.classList.add('warning');
+        }
+        
+        // Auto-hide after a few seconds to let user continue
+        setTimeout(() => {
+            this.hideLoadingScreen();
+            this.state.isInitialized = true;
+        }, 3000);
     }
 
     initializeHistory() {
@@ -300,29 +317,22 @@ class AlhamdulillahApp {
         }
     }
 
-    // Simple fallback method for when modules aren't loaded
-    handleSimpleBlessingChange() {
-        const simpleBlessings = [
-            { english: "For the gift of sight to see the world's colors", arabic: "لنعمة البصر لرؤية ألوان العالم" },
-            { english: "For every single heartbeat, a silent drum of life", arabic: "لكل نبضة قلب، طبل حياة صامت" },
-            { english: "For the air that fills our lungs without a thought", arabic: "للهواء الذي يملأ رئتينا دون تفكير" },
-            { english: "For the simple ability to stand, walk, and move freely", arabic: "للقدرة البسيطة على الوقوف والمشي والحركة بحرية" },
-            { english: "For the restful sleep that recharges mind and body", arabic: "للنوم المريح الذي يعيد شحن العقل والجسد" }
-        ];
-        
-        // Get random blessing
-        const randomIndex = Math.floor(Math.random() * simpleBlessings.length);
-        const blessing = simpleBlessings[randomIndex];
-        
-        // Update content
-        this.updateBlessingContent(blessing);
-        
-        if (this.elements.blessingNumber) {
-            this.elements.blessingNumber.textContent = `#${randomIndex + 1}`;
-        }
-        
-        console.log('Simple blessing updated:', blessing);
+    // Debug methods for testing frequency system
+    getFrequencyStats() {
+        return window.blessingsManager ? window.blessingsManager.getFrequencyStats() : null;
     }
+
+    simulateSelections(count = 50) {
+        return window.blessingsManager ? window.blessingsManager.simulateSelections(count) : null;
+    }
+
+    resetFrequencyData() {
+        if (window.blessingsManager) {
+            window.blessingsManager.resetFrequencyData();
+        }
+    }
+
+
 
     // Settings functionality
     showSettings() {
@@ -414,6 +424,21 @@ class AlhamdulillahApp {
                 setTimeout(() => notification.remove(), 300);
             }
         }, 5000);
+    }
+
+    showCriticalError(title, message) {
+        // Update loading screen to show error
+        if (this.elements.loadingScreen) {
+            const loadingContent = this.elements.loadingScreen.querySelector('.loading-content');
+            if (loadingContent) {
+                loadingContent.innerHTML = `
+                    <div class="error-icon">⚠️</div>
+                    <h3 class="error-title">${title}</h3>
+                    <p class="error-message">${message}</p>
+                    <button class="retry-btn" onclick="location.reload()">Retry</button>
+                `;
+            }
+        }
     }
 }
 
