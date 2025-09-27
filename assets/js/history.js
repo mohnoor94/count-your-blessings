@@ -6,8 +6,6 @@ class HistoryManager {
         this.isSearchPanelVisible = false;
         this.isHistoryCollapsed = false;
         this.currentSearchQuery = '';
-        this.currentCategoryFilter = '';
-        this.currentLanguageFilter = '';
         this.init();
     }
 
@@ -27,8 +25,6 @@ class HistoryManager {
             historySearchPanel: document.getElementById('history-search-panel'),
             historySearchInput: document.getElementById('history-search-input'),
             historySearchClear: document.getElementById('history-search-clear'),
-            historyCategoryFilter: document.getElementById('history-category-filter'),
-            historyLanguageFilter: document.getElementById('history-language-filter'),
             statsTotal: document.getElementById('stats-total'),
             statsFavorites: document.getElementById('stats-favorites'),
             historyStats: document.getElementById('history-stats')
@@ -71,30 +67,14 @@ class HistoryManager {
             });
         }
 
-        // Filter selects
-        if (this.elements.historyCategoryFilter) {
-            this.elements.historyCategoryFilter.addEventListener('change', (e) => {
-                this.currentCategoryFilter = e.target.value;
-                this.updateDisplay();
-            });
-        }
 
-        if (this.elements.historyLanguageFilter) {
-            this.elements.historyLanguageFilter.addEventListener('change', (e) => {
-                this.currentLanguageFilter = e.target.value;
-                this.updateDisplay();
-            });
-        }
 
         // Listen for history updates
         document.addEventListener('historyUpdated', (e) => {
             this.updateDisplay();
         });
 
-        // Listen for blessings loaded to populate filters
-        document.addEventListener('blessingsLoaded', () => {
-            this.populateFilters();
-        });
+
     }
 
     toggleSearchPanel() {
@@ -175,25 +155,7 @@ class HistoryManager {
         this.updateDisplay();
     }
 
-    populateFilters() {
-        if (!window.blessingsManager || !this.elements.historyCategoryFilter) return;
-        
-        const categories = window.blessingsManager.getCategories();
-        
-        // Clear existing options (except "All Categories")
-        const categoryFilter = this.elements.historyCategoryFilter;
-        while (categoryFilter.children.length > 1) {
-            categoryFilter.removeChild(categoryFilter.lastChild);
-        }
-        
-        // Add category options
-        categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-            categoryFilter.appendChild(option);
-        });
-    }
+
 
     updateDisplay() {
         if (!this.elements.historyContainer || !window.blessingsManager) return;
@@ -208,29 +170,16 @@ class HistoryManager {
         
         let history = window.blessingsManager.getHistory();
         
-        // Apply search filter
+        // Apply search filter - search in all languages and fields
         if (this.currentSearchQuery) {
             history = history.filter(blessing => 
                 blessing.english.toLowerCase().includes(this.currentSearchQuery) ||
                 blessing.arabic.includes(this.currentSearchQuery) ||
                 blessing.category.toLowerCase().includes(this.currentSearchQuery) ||
+                (blessing.transliteration && blessing.transliteration.toLowerCase().includes(this.currentSearchQuery)) ||
                 (blessing.tags && blessing.tags.some(tag => 
                     tag.toLowerCase().includes(this.currentSearchQuery)
                 ))
-            );
-        }
-        
-        // Apply category filter
-        if (this.currentCategoryFilter) {
-            history = history.filter(blessing => 
-                blessing.category === this.currentCategoryFilter
-            );
-        }
-        
-        // Apply language filter
-        if (this.currentLanguageFilter) {
-            history = history.filter(blessing => 
-                blessing.language === this.currentLanguageFilter
             );
         }
         
@@ -264,8 +213,8 @@ class HistoryManager {
                 <path d="M12 2v20m8-10H4"></path>
             </svg>
             <div class="history-empty-text">
-                ${this.currentSearchQuery || this.currentCategoryFilter || this.currentLanguageFilter 
-                    ? 'No blessings found matching your filters.' 
+                ${this.currentSearchQuery 
+                    ? 'No blessings found matching your search.' 
                     : 'Your blessing history will appear here as you explore.'}
             </div>
         `;
@@ -287,7 +236,10 @@ class HistoryManager {
         
         card.innerHTML = `
             <div class="history-card-header">
-                <span class="history-card-timestamp">${timeString}</span>
+                <div class="history-card-info">
+                    <span class="history-card-timestamp">${timeString}</span>
+                    <span class="history-card-id">${this.extractBlessingNumber(blessing.id)}</span>
+                </div>
                 <div class="history-card-actions">
                     <button class="history-card-btn favorite ${blessing.marked ? 'active' : ''}" 
                             data-blessing-id="${blessing.id}" 
@@ -309,11 +261,11 @@ class HistoryManager {
                 </div>
             </div>
             <div class="history-card-content">
-                ${this.shouldShowLanguage('english', currentLanguage, blessing.language) 
-                    ? `<p class="blessing-english" lang="en" dir="ltr">${blessing.english}</p>` 
-                    : ''}
-                ${this.shouldShowLanguage('arabic', currentLanguage, blessing.language) 
+                ${this.shouldShowLanguage('ar', currentLanguage, blessing.language) 
                     ? `<p class="blessing-arabic" lang="ar" dir="rtl">${blessing.arabic}</p>` 
+                    : ''}
+                ${this.shouldShowLanguage('en', currentLanguage, blessing.language) 
+                    ? `<p class="blessing-english" lang="en" dir="ltr">${blessing.english}</p>` 
                     : ''}
                 <div class="history-card-category">${blessing.category}</div>
             </div>
@@ -326,9 +278,12 @@ class HistoryManager {
     }
 
     shouldShowLanguage(language, currentLanguage, blessingLanguage) {
+        // Always show both languages when 'both' is selected
         if (currentLanguage === 'both') return true;
+        
+        // Show the specific language when it's selected
         if (currentLanguage === language) return true;
-        if (currentLanguage === 'auto' && blessingLanguage === language) return true;
+        
         return false;
     }
 
@@ -497,6 +452,12 @@ class HistoryManager {
         
         this.elements.statsTotal.textContent = total;
         this.elements.statsFavorites.textContent = favorites;
+    }
+
+    extractBlessingNumber(id) {
+        // Extract numbers from any ID format (blessing-001, fallback-001, etc.)
+        const match = id.match(/(\d+)/);
+        return match ? match[1] : '?';
     }
 
     formatTimestamp(date) {

@@ -299,23 +299,36 @@ class BlessingStorage {
         }
         
         const history = this.getHistory();
+        const blessingId = blessingData.id || blessingData.index || Date.now().toString();
         
-        // Create history entry based on design document model
-        const historyEntry = {
-            blessingId: blessingData.id || blessingData.index || Date.now().toString(),
-            timestamp: Date.now(),
-            language: blessingData.language || this.getPreference('language'),
-            marked: false
-        };
+        // Find existing entry for this blessing
+        const existingIndex = history.findIndex(entry => entry.blessingId === blessingId);
         
-        // Avoid duplicates at the end
-        if (history.length > 0 && 
-            history[history.length - 1].blessingId === historyEntry.blessingId &&
-            history[history.length - 1].language === historyEntry.language) {
-            return true;
+        if (existingIndex !== -1) {
+            // Remove existing entry and preserve its marked status
+            const existingEntry = history.splice(existingIndex, 1)[0];
+            
+            // Create new entry with updated timestamp but preserve marked status
+            const historyEntry = {
+                blessingId: blessingId,
+                timestamp: Date.now(),
+                language: blessingData.language || this.getPreference('language'),
+                marked: existingEntry.marked // Preserve favorite status
+            };
+            
+            // Add to end (most recent)
+            history.push(historyEntry);
+        } else {
+            // Create new history entry
+            const historyEntry = {
+                blessingId: blessingId,
+                timestamp: Date.now(),
+                language: blessingData.language || this.getPreference('language'),
+                marked: false
+            };
+            
+            history.push(historyEntry);
         }
-        
-        history.push(historyEntry);
         
         // Keep only last 50 items to prevent storage bloat
         if (history.length > 50) {

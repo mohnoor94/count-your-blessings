@@ -17,31 +17,70 @@ class BlessingsManager {
 
     async loadBlessings() {
         try {
-            const response = await fetch('assets/data/blessings.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            console.log('Attempting to load blessings from JSON...');
+            
+            // Try multiple possible paths
+            const possiblePaths = [
+                'assets/data/blessings.json',
+                './assets/data/blessings.json',
+                '/assets/data/blessings.json'
+            ];
+            
+            let response = null;
+            let successfulPath = null;
+            
+            for (const path of possiblePaths) {
+                try {
+                    console.log(`Trying path: ${path}`);
+                    response = await fetch(path);
+                    if (response.ok) {
+                        successfulPath = path;
+                        break;
+                    }
+                } catch (pathError) {
+                    console.log(`Path ${path} failed:`, pathError.message);
+                }
             }
+            
+            if (!response || !response.ok) {
+                throw new Error(`All paths failed. Last status: ${response ? response.status : 'No response'}`);
+            }
+            
+            console.log(`Successfully fetched from: ${successfulPath}`);
+            console.log('Fetch response:', response.status, response.ok);
+            
             const data = await response.json();
-            this.blessings = data.blessings || [];
+            console.log('JSON data loaded:', data);
+            
+            if (!data.blessings || !Array.isArray(data.blessings)) {
+                throw new Error('Invalid JSON structure: missing or invalid blessings array');
+            }
+            
+            console.log('Blessings array:', data.blessings);
+            console.log('Number of blessings:', data.blessings.length);
+            
+            this.blessings = data.blessings;
             this.isLoaded = true;
             
             // Dispatch event to notify app
             document.dispatchEvent(new CustomEvent('blessingsLoaded', {
                 detail: {
                     count: this.blessings.length,
-                    categories: [...new Set(this.blessings.map(b => b.category))]
+                    categories: [...new Set(this.blessings.map(b => b.category))],
+                    fallback: false
                 }
             }));
             
-            console.log(`Loaded ${this.blessings.length} blessings`);
+            console.log(`Successfully loaded ${this.blessings.length} blessings from JSON`);
         } catch (error) {
             console.error('Error loading blessings:', error);
+            console.log('Falling back to hardcoded blessings...');
             this.loadFallbackBlessings();
         }
     }
 
     loadFallbackBlessings() {
-        // Fallback blessings if JSON fails to load
+        // Extended fallback blessings if JSON fails to load
         this.blessings = [
             {
                 id: "fallback-001",
@@ -66,10 +105,75 @@ class BlessingsManager {
                 transliteration: "Alhamdulillahi allathee afanee fee badanee",
                 category: "health",
                 tags: ["health", "body", "wellness", "strength"]
+            },
+            {
+                id: "fallback-004",
+                arabic: "الحمد لله الذي كساني هذا الثوب",
+                english: "Praise be to Allah who has clothed me with this garment",
+                transliteration: "Alhamdulillahi allathee kasanee hatha ath-thawb",
+                category: "sustenance",
+                tags: ["clothing", "garment", "provision", "covering"]
+            },
+            {
+                id: "fallback-005",
+                arabic: "الحمد لله الذي آواني",
+                english: "Praise be to Allah who has given me shelter",
+                transliteration: "Alhamdulillahi allathee awanee",
+                category: "sustenance",
+                tags: ["shelter", "home", "protection", "refuge"]
+            },
+            {
+                id: "fallback-006",
+                arabic: "الحمد لله الذي هداني للإسلام",
+                english: "Praise be to Allah who has guided me to Islam",
+                transliteration: "Alhamdulillahi allathee hadanee lil-Islam",
+                category: "guidance",
+                tags: ["guidance", "Islam", "faith", "direction"]
+            },
+            {
+                id: "fallback-007",
+                arabic: "الحمد لله الذي علمني ما لم أكن أعلم",
+                english: "Praise be to Allah who has taught me what I did not know",
+                transliteration: "Alhamdulillahi allathee allamanee ma lam akun a'lam",
+                category: "knowledge",
+                tags: ["knowledge", "learning", "education", "wisdom"]
+            },
+            {
+                id: "fallback-008",
+                arabic: "الحمد لله الذي بنعمته تتم الصالحات",
+                english: "Praise be to Allah, by whose grace good deeds are completed",
+                transliteration: "Alhamdulillahi allathee bi ni'matihi tatimmu as-salihat",
+                category: "general",
+                tags: ["grace", "good deeds", "completion", "blessing"]
+            },
+            {
+                id: "fallback-009",
+                arabic: "الحمد لله الذي أحياني بعد ما أماتني",
+                english: "Praise be to Allah who has given me life after death (sleep)",
+                transliteration: "Alhamdulillahi allathee ahyanee ba'da ma amatanee",
+                category: "general",
+                tags: ["life", "awakening", "sleep", "renewal"]
+            },
+            {
+                id: "fallback-010",
+                arabic: "الحمد لله الذي رزقني الأهل والولد",
+                english: "Praise be to Allah who has blessed me with family and children",
+                transliteration: "Alhamdulillahi allathee razaqanee al-ahl wal-walad",
+                category: "family",
+                tags: ["family", "children", "blessing", "relationships"]
             }
         ];
         this.isLoaded = true;
-        console.log('Loaded fallback blessings');
+        console.log('Loaded fallback blessings - total:', this.blessings.length);
+        
+        // Dispatch event to notify app even with fallback
+        document.dispatchEvent(new CustomEvent('blessingsLoaded', {
+            detail: {
+                count: this.blessings.length,
+                categories: [...new Set(this.blessings.map(b => b.category))],
+                fallback: true
+            }
+        }));
     }
 
     initializeFromStorage() {
@@ -161,22 +265,41 @@ class BlessingsManager {
             ? window.languageManager.getCurrentLanguage() 
             : 'english';
         
-        const historyEntry = {
-            blessingId: blessing.id,
-            timestamp: Date.now(),
-            language: currentLanguage,
-            marked: false
-        };
+        // Check if this blessing already exists in local history
+        const existingIndex = this.history.findIndex(entry => entry.blessingId === blessing.id);
         
-        // Add to local history array
-        this.history.push(historyEntry);
+        if (existingIndex !== -1) {
+            // Remove existing entry and preserve its marked status
+            const existingEntry = this.history.splice(existingIndex, 1)[0];
+            
+            // Create new entry with updated timestamp but preserve marked status
+            const historyEntry = {
+                blessingId: blessing.id,
+                timestamp: Date.now(),
+                language: currentLanguage,
+                marked: existingEntry.marked // Preserve favorite status
+            };
+            
+            // Add to end (most recent)
+            this.history.push(historyEntry);
+        } else {
+            // Create new history entry
+            const historyEntry = {
+                blessingId: blessing.id,
+                timestamp: Date.now(),
+                language: currentLanguage,
+                marked: false
+            };
+            
+            this.history.push(historyEntry);
+        }
         
         // Keep only last 50 entries
         if (this.history.length > 50) {
             this.history.shift();
         }
         
-        // Save to storage
+        // Save to storage (this also has duplicate prevention)
         window.blessingStorage.addToHistory({
             id: blessing.id,
             language: currentLanguage

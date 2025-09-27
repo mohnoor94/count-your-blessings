@@ -71,24 +71,10 @@
 
         <!-- Main Content -->
         <main class="main-content" role="main">
-            <!-- Blessing Card Container -->
-            <section class="blessing-section" aria-live="polite">
-                <div class="blessing-card glass-ui" id="blessing-card">
-                    <span id="blessing-number" class="blessing-number"></span>
-                    <div class="blessing-content">
-                        <div class="blessing-text" id="blessingText">
-                            <p class="blessing-english" id="blessing-en" lang="en" dir="ltr">Praise be to Allah, Lord of all the worlds</p>
-                            <p class="blessing-arabic" id="blessing-ar" lang="ar" dir="rtl">الحمد لله رب العالمين</p>
-                        </div>
-                    </div>
-                </div>
-                <p id="interaction-hint" class="interaction-hint">Tap the card to discover another blessing</p>
-            </section>
-
-            <!-- History Section -->
-            <section class="history-section">
+            <!-- History Sidebar -->
+            <aside class="history-sidebar">
                 <div class="history-header">
-                    <h3 class="history-title">Your Journey of Gratitude</h3>
+                    <h3 class="history-title">Your Journey</h3>
                     <div class="history-controls">
                         <button class="history-btn" id="history-search-btn" aria-label="Search History">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -116,16 +102,6 @@
                         <input type="text" id="history-search-input" placeholder="Search blessings..." class="search-input">
                         <button id="history-search-clear" class="search-clear-btn">×</button>
                     </div>
-                    <div class="search-filters">
-                        <select id="history-category-filter" class="filter-select">
-                            <option value="">All Categories</option>
-                        </select>
-                        <select id="history-language-filter" class="filter-select">
-                            <option value="">All Languages</option>
-                            <option value="english">English</option>
-                            <option value="arabic">Arabic</option>
-                        </select>
-                    </div>
                 </div>
                 
                 <!-- History Container -->
@@ -144,7 +120,24 @@
                         <span class="stats-value" id="stats-favorites">0</span>
                     </div>
                 </div>
-            </section>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="content-area">
+                <!-- Blessing Card Container -->
+                <section class="blessing-section" aria-live="polite">
+                    <div class="blessing-card glass-ui" id="blessing-card">
+                        <span id="blessing-number" class="blessing-number"></span>
+                        <div class="blessing-content">
+                            <div class="blessing-text" id="blessingText">
+                                <p class="blessing-arabic" id="blessing-ar" lang="ar" dir="rtl">الحمد لله رب العالمين</p>
+                                <p class="blessing-english" id="blessing-en" lang="en" dir="ltr">Praise be to Allah, Lord of all the worlds</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="interaction-hint" class="interaction-hint">Tap the card to discover another blessing</p>
+                </section>
+            </div>
         </main>
     </div>
 
