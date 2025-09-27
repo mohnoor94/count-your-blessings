@@ -1,398 +1,256 @@
-/* ===== ANIMATION SYSTEM ===== */
+/* Enhanced Animations for Beautiful Interactions */
 
-/* Animation Variables */
-:root {
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
-  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
-  --duration-slower: 600ms;
-}
-
-/* ===== FADE ANIMATIONS ===== */
+/* Fade-in animation for new blessings */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out;
 }
 
+/* Slide up animation for history cards */
 @keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from { 
+        opacity: 0; 
+        transform: translateY(25px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
 }
 
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.slide-in-up {
+    animation: slideInUp 0.6s ease-out;
 }
 
-/* ===== BLESSING CARD ANIMATIONS ===== */
-.blessing-card {
-  animation: slideInUp var(--duration-slow) var(--ease-out);
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-.blessing-card.transitioning {
-  animation: blessingFadeOut var(--duration-normal) var(--ease-in) forwards;
-}
-
-.blessing-card.entering {
-  animation: blessingFadeIn var(--duration-normal) var(--ease-out);
-}
-
-/* Enhanced Blessing Card Animations */
-@keyframes blessingFadeOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: translateY(-10px) scale(0.98);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-  }
-}
-
-@keyframes blessingFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  50% {
-    opacity: 0.7;
-    transform: translateY(5px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Blessing Text Animations */
-.blessing-text {
-  animation: fadeIn var(--duration-slower) var(--ease-out) 0.2s both;
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-/* Language-specific text animations */
-.blessing-arabic {
-  animation: slideInRight var(--duration-slow) var(--ease-out) 0.1s both;
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.blessing-english {
-  animation: slideInLeft var(--duration-slow) var(--ease-out) 0.3s both;
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-/* RTL/LTR specific animations */
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Language transition animations */
-.blessing-text.arabic-primary .blessing-arabic {
-  animation: emphasizeText var(--duration-normal) var(--ease-out);
-}
-
-.blessing-text.english-primary .blessing-english {
-  animation: emphasizeText var(--duration-normal) var(--ease-out);
-}
-
-@keyframes emphasizeText {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.02);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Bilingual mode animations */
-.blessing-text.bilingual .blessing-arabic {
-  animation: slideInDown var(--duration-slow) var(--ease-out) 0.1s both;
-}
-
-.blessing-text.bilingual .blessing-english {
-  animation: slideInUp var(--duration-slow) var(--ease-out) 0.3s both;
-}
-
-/* ===== BUTTON ANIMATIONS ===== */
-.new-blessing-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.new-blessing-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width var(--duration-normal) var(--ease-out),
-              height var(--duration-normal) var(--ease-out);
-}
-
-.new-blessing-btn:active::before {
-  width: 300px;
-  height: 300px;
-}
-
-/* Button Hover Effects */
-.new-blessing-btn:hover .btn-icon {
-  animation: bounce var(--duration-slow) var(--ease-bounce);
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-8px);
-  }
-  60% {
-    transform: translateY(-4px);
-  }
-}
-
-/* ===== NAVIGATION ANIMATIONS ===== */
-.bottom-nav {
-  animation: slideInUp var(--duration-slow) var(--ease-out) 0.4s both;
-}
-
-.nav-btn {
-  transition: all var(--duration-normal) var(--ease-out);
-}
-
-.nav-btn:hover .nav-icon {
-  animation: pulse var(--duration-normal) var(--ease-out);
-}
-
+/* Pulse animation for interactive elements */
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
-/* ===== LANGUAGE TOGGLE ANIMATIONS ===== */
-.language-toggle {
-  position: relative;
-  overflow: hidden;
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
 }
 
-.language-toggle::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left var(--duration-slow) var(--ease-out);
+/* Gentle bounce for buttons */
+@keyframes gentleBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-3px);
+    }
+    60% {
+        transform: translateY(-2px);
+    }
 }
 
-.language-toggle:hover::after {
-  left: 100%;
+.gentle-bounce {
+    animation: gentleBounce 0.6s ease;
 }
 
-/* ===== LOADING ANIMATIONS ===== */
-.loading-screen {
-  animation: fadeIn var(--duration-normal) var(--ease-out);
-}
-
-.loading-spinner {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-text {
-  animation: fadeIn var(--duration-slow) var(--ease-out) 0.3s both;
-}
-
-/* ===== HEADER ANIMATIONS ===== */
-.header {
-  animation: slideInDown var(--duration-slow) var(--ease-out);
-}
-
-.app-title {
-  animation: fadeIn var(--duration-slower) var(--ease-out) 0.2s both;
-}
-
-.title-english {
-  animation: slideInDown var(--duration-slow) var(--ease-out) 0.1s both;
-}
-
-.title-arabic {
-  animation: slideInDown var(--duration-slow) var(--ease-out) 0.3s both;
-}
-
-/* ===== STAGGER ANIMATIONS ===== */
-.stagger-children > * {
-  animation-delay: calc(var(--stagger-delay, 0.1s) * var(--index, 0));
-}
-
-/* ===== MICRO-INTERACTIONS ===== */
-
-/* Gentle Scale on Tap */
-.blessing-card:active {
-  transform: scale(0.98);
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-/* Smooth Focus Transitions */
-button:focus-visible {
-  transition: outline var(--duration-fast) var(--ease-out);
-}
-
-/* ===== THEME TRANSITION ANIMATIONS ===== */
-* {
-  transition: background-color var(--duration-normal) var(--ease-out),
-              color var(--duration-normal) var(--ease-out),
-              border-color var(--duration-normal) var(--ease-out);
-}
-
-/* ===== REDUCED MOTION OVERRIDES ===== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  .loading-spinner {
-    animation: none;
-    border: 3px solid var(--primary-green);
-  }
-  
-  .new-blessing-btn:hover .btn-icon {
-    animation: none;
-  }
-  
-  .nav-btn:hover .nav-icon {
-    animation: none;
-  }
-}
-
-/* ===== ENTRANCE ANIMATIONS FOR DYNAMIC CONTENT ===== */
-.fade-enter {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity var(--duration-normal) var(--ease-out),
-              transform var(--duration-normal) var(--ease-out);
-}
-
-.fade-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.fade-exit-active {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity var(--duration-normal) var(--ease-in),
-              transform var(--duration-normal) var(--ease-in);
-}
-
-/* ===== SHIMMER LOADING EFFECT ===== */
+/* Shimmer effect for loading states */
 @keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
 }
 
 .shimmer {
-  background: linear-gradient(90deg, 
-    var(--surface) 0%, 
-    rgba(255, 255, 255, 0.1) 50%, 
-    var(--surface) 100%);
-  background-size: 200px 100%;
-  animation: shimmer 1.5s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Scale animation for card interactions */
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.scale-in {
+    animation: scaleIn 0.3s ease-out;
+}
+
+/* Rotate animation for loading spinner */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate {
+    animation: rotate 1s linear infinite;
+}
+
+/* Glow pulse for special moments */
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+    }
+}
+
+.glow-pulse {
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Typewriter effect for text */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typewriter 2s steps(40, end);
+}
+
+/* Smooth transitions for all interactive elements */
+.smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover animations */
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Focus animations */
+.focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+/* Stagger animation for multiple elements */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* Entrance animations */
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-left { animation: slideInFromLeft 0.6s ease-out; }
+.slide-in-right { animation: slideInFromRight 0.6s ease-out; }
+.slide-in-top { animation: slideInFromTop 0.6s ease-out; }
+.slide-in-bottom { animation: slideInFromBottom 0.6s ease-out; }
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .slide-in-up,
+    .pulse,
+    .gentle-bounce,
+    .shimmer,
+    .float,
+    .scale-in,
+    .rotate,
+    .glow-pulse,
+    .typewriter,
+    .slide-in-left,
+    .slide-in-right,
+    .slide-in-top,
+    .slide-in-bottom {
+        animation: none;
+    }
+    
+    .smooth-transition {
+        transition: none;
+    }
 }

@@ -1,16 +1,15 @@
 {
-  "name": "Blessing Reminder - Alhamdulillah",
-  "short_name": "Blessings",
-  "description": "Daily reminders of life's blessings - A spiritual PWA to help you reflect and say Alhamdulillah",
+  "name": "Alhamdulillah Reminder",
+  "short_name": "Alhamdulillah",
+  "description": "Beautiful daily reminders of life's blessings to inspire gratitude and mindfulness",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "theme_color": "#2D5A27",
-  "background_color": "#F7F5F3",
-  "categories": ["lifestyle", "health", "spirituality"],
-  "lang": "en",
-  "dir": "ltr",
+  "background_color": "#a0c4ff",
+  "theme_color": "#a0c4ff",
+  "orientation": "portrait",
   "scope": "/",
+  "lang": "en",
+  "categories": ["lifestyle", "education", "health", "spirituality"],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
@@ -61,12 +60,18 @@
       "purpose": "maskable any"
     }
   ],
-  "screenshots": [
+  "shortcuts": [
     {
-      "src": "assets/screenshots/mobile-1.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "name": "New Blessing",
+      "short_name": "New",
+      "description": "Discover a new blessing reminder",
+      "url": "/?action=new",
+      "icons": [
+        {
+          "src": "assets/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ]
 }

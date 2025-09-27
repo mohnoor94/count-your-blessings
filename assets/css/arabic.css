@@ -1,342 +1,217 @@
-/* ===== ARABIC TYPOGRAPHY & RTL SUPPORT ===== */
+/* Enhanced Arabic Typography and RTL Support */
 
-/* Import Arabic Font */
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-/* Arabic Font Fallbacks */
-:root {
-  --font-arabic-stack: 'Amiri', 'Traditional Arabic', 'Al Bayan', 'Geeza Pro', 'Arabic Typesetting', serif;
+/* Arabic Font Family */
+.font-arabic,
+.arabic-text,
+.blessing-arabic {
+    font-family: 'Cairo', 'Amiri', 'Scheherazade New', 'Noto Sans Arabic', serif;
 }
 
-/* ===== RTL LAYOUT SUPPORT ===== */
+/* RTL Support */
 [dir="rtl"] {
-  direction: rtl;
-  text-align: right;
-  transition: all var(--transition-normal);
+    direction: rtl;
+    text-align: right;
 }
 
-[dir="ltr"] {
-  direction: ltr;
-  text-align: left;
-  transition: all var(--transition-normal);
+[lang="ar"] {
+    direction: rtl;
+    text-align: right;
 }
 
-/* Enhanced RTL/LTR transitions */
-.app[data-language="arabic"] {
-  direction: rtl;
-  transition: direction var(--transition-normal);
-}
-
-.app[data-language="english"] {
-  direction: ltr;
-  transition: direction var(--transition-normal);
-}
-
-/* Header content direction handling */
-.app[data-language="arabic"] .header-content {
-  flex-direction: row-reverse;
-  transition: flex-direction var(--transition-normal);
-}
-
-.app[data-language="english"] .header-content {
-  flex-direction: row;
-  transition: flex-direction var(--transition-normal);
-}
-
-/* ===== ARABIC TEXT STYLING ===== */
-.blessing-arabic {
-  font-family: var(--font-arabic-stack);
-  font-size: var(--text-2xl);
-  line-height: 1.8;
-  color: var(--text-arabic);
-  font-weight: 400;
-  direction: rtl;
-  text-align: right;
-  unicode-bidi: embed;
-  
-  /* Arabic-specific typography improvements */
-  font-feature-settings: 
-    "liga" 1,     /* Enable ligatures */
-    "calt" 1,     /* Enable contextual alternates */
-    "kern" 1;     /* Enable kerning */
-  
-  /* Better text rendering for Arabic */
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Arabic text in different contexts */
-.title-arabic {
-  font-family: var(--font-arabic-stack);
-  font-size: var(--text-lg);
-  color: var(--text-arabic);
-  direction: rtl;
-  text-align: right;
-  font-weight: 400;
-}
-
-/* ===== LANGUAGE-SPECIFIC LAYOUTS ===== */
-
-/* When Arabic is primary language */
-.app[data-language="arabic"] .blessing-text {
-  text-align: right;
-  direction: rtl;
-}
-
-.app[data-language="arabic"] .blessing-arabic {
-  font-size: var(--text-2xl);
-  color: var(--text-primary);
-  opacity: 1;
-  order: 1;
-  margin-bottom: var(--space-4);
-}
-
-.app[data-language="arabic"] .blessing-english {
-  text-align: left;
-  direction: ltr;
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  opacity: 0.8;
-  order: 2;
-}
-
-/* When English is primary language */
-.app[data-language="english"] .blessing-text {
-  text-align: left;
-  direction: ltr;
-}
-
-.app[data-language="english"] .blessing-english {
-  font-size: var(--text-2xl);
-  color: var(--text-primary);
-  opacity: 1;
-  order: 1;
-  margin-bottom: var(--space-4);
-}
-
-.app[data-language="english"] .blessing-arabic {
-  text-align: right;
-  direction: rtl;
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  opacity: 0.8;
-  order: 2;
-}
-
-/* Language toggle button styling based on current language */
-.app[data-language="arabic"] .language-toggle {
-  font-family: var(--font-english);
-  direction: ltr;
-}
-
-.app[data-language="english"] .language-toggle {
-  font-family: var(--font-arabic-stack);
-  direction: rtl;
-}
-
-/* Smooth transitions for language switching */
-.app[data-language="arabic"] .blessing-text,
-.app[data-language="english"] .blessing-text {
-  transition: text-align var(--transition-normal), direction var(--transition-normal);
-}
-
-.app[data-language="arabic"] .blessing-arabic,
-.app[data-language="arabic"] .blessing-english,
-.app[data-language="english"] .blessing-arabic,
-.app[data-language="english"] .blessing-english {
-  transition: font-size var(--transition-normal), 
-              color var(--transition-normal),
-              opacity var(--transition-normal),
-              order var(--transition-normal),
-              margin var(--transition-normal);
-}
-
-/* ===== RESPONSIVE ARABIC TYPOGRAPHY ===== */
-
-/* Mobile Arabic Typography */
-@media (max-width: 479px) {
-  .blessing-arabic {
-    font-size: var(--text-xl);
-    line-height: 1.7;
-  }
-  
-  .title-arabic {
-    font-size: var(--text-base);
-  }
-}
-
-/* Large Mobile */
-@media (min-width: 480px) {
-  .blessing-arabic {
-    font-size: var(--text-2xl);
-    line-height: 1.8;
-  }
-  
-  .title-arabic {
-    font-size: var(--text-lg);
-  }
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-  .blessing-arabic {
-    font-size: var(--text-3xl);
-    line-height: 1.9;
-  }
-  
-  .title-arabic {
-    font-size: var(--text-xl);
-  }
-}
-
-/* Desktop */
-@media (min-width: 1024px) {
-  .blessing-arabic {
-    font-size: 2.25rem; /* 36px */
-    line-height: 2;
-  }
-}
-
-/* ===== ARABIC BUTTON TEXT ===== */
-.language-toggle[data-language="arabic"] {
-  font-family: var(--font-arabic-stack);
-  direction: rtl;
-}
-
-.nav-label[lang="ar"] {
-  font-family: var(--font-arabic-stack);
-  direction: rtl;
-}
-
-/* ===== MIXED CONTENT HANDLING ===== */
-
-/* When both languages are shown */
-.blessing-text.bilingual {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.blessing-text.bilingual .blessing-arabic {
-  order: 1;
-  text-align: right;
-  direction: rtl;
-}
-
-.blessing-text.bilingual .blessing-english {
-  order: 2;
-  text-align: left;
-  direction: ltr;
-  font-size: var(--text-lg);
-  opacity: 0.9;
-}
-
-/* ===== ARABIC NUMERALS & PUNCTUATION ===== */
-
-/* Ensure Arabic numerals display correctly */
-.arabic-numerals {
-  font-feature-settings: "lnum" 1; /* Use lining numerals */
-  direction: ltr;
-  unicode-bidi: embed;
-}
-
-/* Handle mixed Arabic-English punctuation */
-.mixed-text {
-  unicode-bidi: plaintext;
-}
-
-/* ===== ACCESSIBILITY FOR ARABIC ===== */
-
-/* Screen reader support for Arabic */
-.blessing-arabic[lang="ar"] {
-  /* Removed invalid 'speak' property - screen readers handle this automatically */
-}
-
-/* Ensure proper reading order */
-.blessing-text[dir="rtl"] {
-  unicode-bidi: isolate;
-}
-
-/* ===== PRINT STYLES FOR ARABIC ===== */
-@media print {
-  .blessing-arabic {
-    font-size: 18pt;
+/* Arabic Text Styling */
+.arabic-text {
+    font-weight: 700;
     line-height: 1.6;
-    color: #000;
-  }
-  
-  .title-arabic {
-    font-size: 14pt;
-  }
+    letter-spacing: 0.02em;
 }
 
-/* ===== HIGH CONTRAST MODE FOR ARABIC ===== */
-@media (prefers-contrast: high) {
-  .blessing-arabic {
-    color: #000;
-    font-weight: 500;
-  }
-  
-  .title-arabic {
-    color: #000;
+.blessing-arabic {
+    font-weight: 700;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+    text-align: center;
+    direction: rtl;
+    unicode-bidi: embed;
+}
+
+/* Arabic Typography Scale */
+.arabic-xs { font-size: 0.75rem; }
+.arabic-sm { font-size: 0.875rem; }
+.arabic-base { font-size: 1rem; }
+.arabic-lg { font-size: 1.125rem; }
+.arabic-xl { font-size: 1.25rem; }
+.arabic-2xl { font-size: 1.5rem; }
+.arabic-3xl { font-size: 1.875rem; }
+.arabic-4xl { font-size: 2.25rem; }
+.arabic-5xl { font-size: 3rem; }
+
+/* Arabic Font Weights */
+.arabic-light { font-weight: 300; }
+.arabic-normal { font-weight: 400; }
+.arabic-medium { font-weight: 500; }
+.arabic-semibold { font-weight: 600; }
+.arabic-bold { font-weight: 700; }
+
+/* Enhanced Arabic Readability */
+.arabic-text,
+.blessing-arabic {
+    /* Better text rendering for Arabic */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* Improved spacing for Arabic characters */
+    word-spacing: 0.1em;
+    
+    /* Better line height for Arabic text */
+    line-height: 1.8;
+}
+
+/* Arabic Diacritics Support */
+.arabic-with-diacritics {
+    line-height: 2.2;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "mark" 1, "mkmk" 1;
+}
+
+/* RTL Layout Adjustments */
+[dir="rtl"] .blessing-card {
+    text-align: center;
+}
+
+[dir="rtl"] .blessing-number {
+    left: 1rem;
+    right: auto;
+}
+
+[dir="rtl"] .content-language-selector {
+    flex-direction: row-reverse;
+}
+
+/* Arabic Button Styles */
+.lang-btn.font-arabic {
     font-weight: 600;
-  }
+    letter-spacing: 0.02em;
 }
 
-/* ===== DARK MODE ADJUSTMENTS FOR ARABIC ===== */
-@media (prefers-color-scheme: dark) {
-  .blessing-arabic {
-    color: #E6E6E6;
-  }
-  
-  .title-arabic {
-    color: #D4AF37;
-  }
+/* Mixed Content (Arabic + English) */
+.mixed-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
 }
 
-/* ===== FONT LOADING OPTIMIZATION ===== */
-
-/* Font display optimization for Arabic fonts */
-/* Note: @font-face rules are handled by Google Fonts import */
-
-/* Fallback for when Arabic font is loading */
-.blessing-arabic {
-  font-display: swap;
+.mixed-content .english-part {
+    direction: ltr;
+    text-align: center;
 }
 
-/* ===== SPECIAL ARABIC CHARACTERS ===== */
-
-/* Ensure proper rendering of Arabic diacritics */
-.blessing-arabic {
-  font-variant-ligatures: contextual;
-  font-kerning: auto;
+.mixed-content .arabic-part {
+    direction: rtl;
+    text-align: center;
 }
 
-/* Handle Arabic kashida (tatweel) properly */
-.blessing-arabic {
-  text-justify: inter-character;
+/* Arabic Numerals */
+.arabic-numerals {
+    font-feature-settings: "lnum" 1;
 }
 
-/* ===== BIDI ALGORITHM SUPPORT ===== */
-
-/* Explicit directional formatting */
-.rtl-text {
-  direction: rtl;
-  unicode-bidi: embed;
+/* Enhanced Arabic Colors */
+.text-arabic-primary {
+    color: #4338ca;
 }
 
-.ltr-text {
-  direction: ltr;
-  unicode-bidi: embed;
+.text-arabic-secondary {
+    color: #6366f1;
 }
 
-/* Isolate mixed directional content */
-.bidi-isolate {
-  unicode-bidi: isolate;
+.text-arabic-muted {
+    color: rgba(67, 56, 202, 0.7);
 }
 
-/* Override for specific elements */
-.bidi-override {
-  unicode-bidi: bidi-override;
+/* Arabic Text Shadows for Better Readability */
+.arabic-text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.arabic-text-shadow-strong {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Arabic Typography */
+@media (max-width: 640px) {
+    .arabic-text {
+        font-size: 2rem;
+    }
+    
+    .blessing-arabic {
+        font-size: 1.25rem;
+        line-height: 1.7;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .arabic-text {
+        font-size: 2.5rem;
+    }
+    
+    .blessing-arabic {
+        font-size: 1.5rem;
+        line-height: 1.8;
+    }
+}
+
+@media (min-width: 1025px) {
+    .arabic-text {
+        font-size: 3rem;
+    }
+    
+    .blessing-arabic {
+        font-size: 1.875rem;
+        line-height: 1.9;
+    }
+}
+
+/* Arabic Animation Adjustments */
+@keyframes arabicFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.arabic-fade-in {
+    animation: arabicFadeIn 0.8s ease-out;
+}
+
+/* Arabic Accessibility */
+.arabic-text:focus,
+.blessing-arabic:focus {
+    outline: 2px solid #4338ca;
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .arabic-text,
+    .blessing-arabic {
+        font-weight: 700;
+        text-shadow: none;
+    }
+}
+
+/* Print Styles for Arabic */
+@media print {
+    .arabic-text,
+    .blessing-arabic {
+        color: black !important;
+        text-shadow: none !important;
+        font-size: 14pt !important;
+        line-height: 1.6 !important;
+    }
 }

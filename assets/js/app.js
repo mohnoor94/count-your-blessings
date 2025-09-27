@@ -1,569 +1,447 @@
-/**
- * Main Application Controller
- * Handles app initialization, routing, and core functionality
- */
+// Enhanced Main Application with Beautiful Interactions
 
-class BlessingReminderApp {
-  constructor() {
-    this.isInitialized = false;
-    this.loadingScreen = null;
-
-    // Bind methods
-    this.init = this.init.bind(this);
-    this.handleNewBlessing = this.handleNewBlessing.bind(this);
-    this.handleHistoryView = this.handleHistoryView.bind(this);
-    this.handleSettings = this.handleSettings.bind(this);
-
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', this.init);
-    } else {
-      this.init();
-    }
-  }
-
-  /**
-   * Initialize the application
-   */
-  async init() {
-    try {
-      console.log('Initializing Blessing Reminder App...');
-
-      // Show loading screen
-      this.showLoadingScreen();
-
-      // Initialize core modules
-      await this.initializeModules();
-
-      // Set up event listeners
-      this.setupEventListeners();
-      
-      // Set up language change listener
-      this.setupLanguageChangeListener();
-
-      // Load user preferences
-      this.loadUserPreferences();
-
-      // Register service worker for PWA functionality
-      await this.registerServiceWorker();
-
-      // Load initial blessing
-      await this.loadInitialBlessing();
-
-      // Hide loading screen
-      this.hideLoadingScreen();
-
-      this.isInitialized = true;
-      console.log('App initialized successfully');
-
-    } catch (error) {
-      console.error('Failed to initialize app:', error);
-      this.handleInitializationError(error);
-    }
-  }
-
-  /**
-   * Initialize core application modules
-   */
-  async initializeModules() {
-    // Wait for other modules to be available
-    await this.waitForModules(['BlessingManager', 'StorageManager', 'ContentLanguageManager']);
-
-    // Initialize modules
-    if (window.BlessingManager) {
-      window.blessingManager = new window.BlessingManager();
-      await window.blessingManager.init();
+class AlhamdulillahApp {
+    constructor() {
+        this.elements = {};
+        this.state = {
+            currentBlessingIndex: 0,
+            hintHasBeenHidden: false,
+            isInitialized: false
+        };
+        this.init();
     }
 
-    if (window.StorageManager) {
-      window.storageManager = new window.StorageManager();
-      window.storageManager.init();
+    async init() {
+        this.cacheElements();
+        this.setupEventListeners();
+        
+        // Simple initialization without complex dependency waiting
+        setTimeout(() => {
+            this.initializeApp();
+            this.setupGlassmorphism();
+        }, 500); // Give other scripts time to load
     }
 
-    if (window.ContentLanguageManager) {
-      window.contentLanguageManager = new window.ContentLanguageManager();
-      window.contentLanguageManager.init();
+    cacheElements() {
+        this.elements = {
+            app: document.getElementById('app'),
+            blessingCard: document.getElementById('blessing-card'),
+            blessingEn: document.getElementById('blessing-en'),
+            blessingAr: document.getElementById('blessing-ar'),
+            blessingNumber: document.getElementById('blessing-number'),
+            interactionHint: document.getElementById('interaction-hint'),
+            historyContainer: document.getElementById('history-container'),
+            glowEffect: document.getElementById('glow-effect'),
+            loadingScreen: document.getElementById('loadingScreen'),
+            langButtons: document.querySelectorAll('.lang-btn'),
+            settingsBtn: document.getElementById('settings-btn')
+        };
     }
-  }
 
-  /**
-   * Wait for required modules to load
-   */
-  waitForModules(moduleNames, timeout = 5000) {
-    return new Promise((resolve, reject) => {
-      const startTime = Date.now();
-
-      const checkModules = () => {
-        const allLoaded = moduleNames.every(name => window[name]);
-
-        if (allLoaded) {
-          resolve();
-        } else if (Date.now() - startTime > timeout) {
-          reject(new Error(`Timeout waiting for modules: ${moduleNames.join(', ')}`));
+    setupEventListeners() {
+        // Blessing card click
+        if (this.elements.blessingCard) {
+            console.log('Setting up blessing card click listener');
+            this.elements.blessingCard.addEventListener('click', () => {
+                console.log('Blessing card clicked!');
+                this.handleNewBlessingRequest();
+            });
         } else {
-          setTimeout(checkModules, 100);
+            console.error('Blessing card element not found!');
         }
-      };
 
-      checkModules();
-    });
-  }
-
-  /**
-   * Set up event listeners for UI interactions
-   */
-  setupEventListeners() {
-    // Note: Content language selection is handled by ContentLanguageManager
-    
-    // New blessing button
-    const newBlessingBtn = document.getElementById('newBlessingBtn');
-    if (newBlessingBtn) {
-      newBlessingBtn.addEventListener('click', this.handleNewBlessing);
-    }
-
-    // History button
-    const historyBtn = document.getElementById('historyBtn');
-    if (historyBtn) {
-      historyBtn.addEventListener('click', this.handleHistoryView);
-    }
-
-    // Settings button
-    const settingsBtn = document.getElementById('settingsBtn');
-    if (settingsBtn) {
-      settingsBtn.addEventListener('click', this.handleSettings);
-    }
-
-    // Handle app visibility changes
-    document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
-
-    // Handle online/offline status
-    window.addEventListener('online', this.handleOnlineStatus.bind(this));
-    window.addEventListener('offline', this.handleOfflineStatus.bind(this));
-
-    // Set up touch interactions for blessing card
-    this.setupTouchInteractions();
-
-    console.log('Event listeners set up successfully');
-  }
-
-  /**
-   * Load user preferences from storage
-   */
-  loadUserPreferences() {
-    if (window.storageManager) {
-      const preferences = window.storageManager.getPreferences();
-
-      // Apply theme preference
-      if (preferences.theme) {
-        this.applyTheme(preferences.theme);
-      }
-
-      console.log('User preferences loaded:', preferences);
-    }
-  }
-
-  /**
-   * Load initial blessing on app startup
-   */
-  async loadInitialBlessing() {
-    if (window.blessingManager) {
-      try {
-        const blessing = await window.blessingManager.getRandomBlessing();
-        if (blessing) {
-          this.displayBlessing(blessing);
-
-          // Add to history
-          if (window.storageManager && window.contentLanguageManager) {
-            const contentLang = window.contentLanguageManager.getContentLanguage();
-            window.storageManager.addToHistory(blessing.id, contentLang);
-          }
+        // Settings button click
+        if (this.elements.settingsBtn) {
+            this.elements.settingsBtn.addEventListener('click', () => {
+                this.showSettings();
+            });
         }
-      } catch (error) {
-        console.warn('Failed to load initial blessing:', error);
-        // App will show default blessing from HTML
-      }
-    }
-  }
 
-  /**
-   * Register service worker for PWA functionality
-   */
-  async registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      try {
-        const registration = await navigator.serviceWorker.register('/sw.js');
-        console.log('Service Worker registered successfully:', registration);
-
-        // Handle service worker updates
-        registration.addEventListener('updatefound', () => {
-          console.log('Service Worker update found');
+        // Custom events from other modules
+        document.addEventListener('blessingChanged', (e) => {
+            this.handleBlessingChanged(e.detail);
         });
 
-      } catch (error) {
-        console.warn('Service Worker registration failed:', error);
-      }
+        document.addEventListener('languageChanged', (e) => {
+            this.handleLanguageChanged(e.detail);
+        });
+
+        document.addEventListener('blessingsLoaded', (e) => {
+            this.handleBlessingsLoaded(e.detail);
+        });
+
+
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyboardShortcuts(e);
+        });
+
+        // Touch gestures for mobile
+        this.setupTouchGestures();
     }
-  }
 
-  // Language toggle is now handled by ContentLanguageManager
-
-  /**
-   * Handle new blessing request
-   */
-  async handleNewBlessing() {
-    if (!this.isInitialized || !window.blessingManager) return;
-
-    try {
-      // Add loading state to button
-      const button = document.getElementById('newBlessingBtn');
-      if (button) {
-        button.disabled = true;
-        button.innerHTML = '<span class="btn-text">Loading...</span><span class="btn-icon">⏳</span>';
-      }
-
-      // Get new blessing
-      const blessing = await window.blessingManager.getRandomBlessing();
-
-      if (blessing) {
-        // Display the blessing
-        this.displayBlessing(blessing);
-
-        // Add to history
-        if (window.storageManager && window.contentLanguageManager) {
-          const contentLang = window.contentLanguageManager.getContentLanguage();
-          window.storageManager.addToHistory(blessing.id, contentLang);
+    async waitForDependencies() {
+        // Wait for all modules to be loaded
+        const maxWait = 5000; // 5 seconds
+        const startTime = Date.now();
+        
+        while (!window.blessingsManager || !window.languageManager || !window.blessingStorage) {
+            if (Date.now() - startTime > maxWait) {
+                console.warn('Some dependencies failed to load within timeout');
+                break;
+            }
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
-      }
-
-    } catch (error) {
-      console.error('Failed to get new blessing:', error);
-      this.showError('Failed to load new blessing. Please try again.');
-
-    } finally {
-      // Reset button state
-      const button = document.getElementById('newBlessingBtn');
-      if (button) {
-        button.disabled = false;
-        button.innerHTML = '<span class="btn-text">New Blessing</span><span class="btn-icon">✨</span>';
-      }
-    }
-  }
-
-  /**
-   * Display a blessing in the UI with proper language handling
-   */
-  displayBlessing(blessing) {
-    const blessingCard = document.getElementById('blessingCard');
-    const blessingText = blessingCard.querySelector('.blessing-text');
-    const arabicText = blessingCard.querySelector('.blessing-arabic');
-    const englishText = blessingCard.querySelector('.blessing-english');
-
-    if (!blessingCard || !blessingText || !arabicText || !englishText) {
-      console.error('Required blessing display elements not found');
-      return;
     }
 
-    // Add transition class for smooth animation
-    blessingCard.classList.add('transitioning');
-
-    setTimeout(() => {
-      // Update text content
-      arabicText.textContent = blessing.arabic || 'الحمد لله';
-      englishText.textContent = blessing.english || 'Praise be to Allah';
-
-      // Handle language-specific display
-      this.updateBlessingDisplay(blessing);
-
-      // Remove transition class and add entering class
-      blessingCard.classList.remove('transitioning');
-      blessingCard.classList.add('entering');
-
-      // Remove entering class after animation completes
-      setTimeout(() => {
-        blessingCard.classList.remove('entering');
-      }, 400);
-
-    }, 250);
-  }
-
-  /**
-   * Update blessing display based on current content language
-   */
-  updateBlessingDisplay(blessing) {
-    // Let the content language manager handle the display logic
-    if (window.contentLanguageManager) {
-      window.contentLanguageManager.updateContentDisplay();
-    }
-  }
-
-  /**
-   * Handle history view
-   */
-  handleHistoryView() {
-    if (!this.isInitialized) return;
-
-    console.log('Opening history view...');
-    // This will be implemented in a later task
-    this.showComingSoon('History feature coming soon!');
-  }
-
-  /**
-   * Handle settings
-   */
-  handleSettings() {
-    if (!this.isInitialized) return;
-
-    console.log('Opening settings...');
-    // This will be implemented in a later task
-    this.showComingSoon('Settings feature coming soon!');
-  }
-
-  // UI language is now always English - no need to update
-  
-  /**
-   * Refresh blessing display with current language settings
-   */
-  refreshBlessingDisplay() {
-    const blessingCard = document.getElementById('blessingCard');
-    const arabicText = document.querySelector('.blessing-arabic');
-    const englishText = document.querySelector('.blessing-english');
-    
-    if (!blessingCard || !arabicText || !englishText) return;
-    
-    // Get current blessing text
-    const currentBlessing = {
-      arabic: arabicText.textContent,
-      english: englishText.textContent
-    };
-    
-    // Re-display with new content language settings
-    if (window.contentLanguageManager) {
-      window.contentLanguageManager.updateContentDisplay();
-    }
-  }
-
-  /**
-   * Apply theme to the application
-   */
-  applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-
-  /**
-   * Show loading screen
-   */
-  showLoadingScreen() {
-    this.loadingScreen = document.getElementById('loadingScreen');
-    if (this.loadingScreen) {
-      this.loadingScreen.classList.remove('hidden');
-    }
-  }
-
-  /**
-   * Hide loading screen
-   */
-  hideLoadingScreen() {
-    if (this.loadingScreen) {
-      this.loadingScreen.classList.add('hidden');
-
-      // Remove from DOM after transition
-      setTimeout(() => {
-        if (this.loadingScreen && this.loadingScreen.parentNode) {
-          this.loadingScreen.parentNode.removeChild(this.loadingScreen);
+    initializeApp() {
+        console.log('Initializing app...');
+        this.showLoadingScreen();
+        
+        // Initialize from storage
+        if (window.blessingsManager) {
+            window.blessingsManager.initializeFromStorage();
         }
-      }, 600);
+
+        // Set initial blessing
+        this.displayCurrentBlessing();
+        
+        // Initialize history
+        this.initializeHistory();
+        
+        // Hide loading screen and mark as initialized
+        setTimeout(() => {
+            this.hideLoadingScreen();
+            this.state.isInitialized = true;
+            console.log('App initialized successfully');
+        }, 1000);
     }
-  }
 
-  /**
-   * Handle initialization errors
-   */
-  handleInitializationError(error) {
-    console.error('App initialization failed:', error);
-
-    // Hide loading screen
-    this.hideLoadingScreen();
-
-    // Show error message
-    this.showError('Failed to initialize the app. Please refresh the page.');
-  }
-
-  /**
-   * Show error message to user
-   */
-  showError(message) {
-    // Create simple error notification
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-notification';
-    errorDiv.textContent = message;
-    errorDiv.style.cssText = `
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff4444;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      z-index: 10000;
-      font-size: 14px;
-    `;
-
-    document.body.appendChild(errorDiv);
-
-    // Remove after 5 seconds
-    setTimeout(() => {
-      if (errorDiv.parentNode) {
-        errorDiv.parentNode.removeChild(errorDiv);
-      }
-    }, 5000);
-  }
-
-  /**
-   * Show coming soon message
-   */
-  showComingSoon(message) {
-    // Create simple notification
-    const notificationDiv = document.createElement('div');
-    notificationDiv.className = 'coming-soon-notification';
-    notificationDiv.textContent = message;
-    notificationDiv.style.cssText = `
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary-green);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      z-index: 10000;
-      font-size: 14px;
-    `;
-
-    document.body.appendChild(notificationDiv);
-
-    // Remove after 3 seconds
-    setTimeout(() => {
-      if (notificationDiv.parentNode) {
-        notificationDiv.parentNode.removeChild(notificationDiv);
-      }
-    }, 3000);
-  }
-
-  /**
-   * Handle app visibility changes
-   */
-  handleVisibilityChange() {
-    if (document.hidden) {
-      console.log('App hidden');
-    } else {
-      console.log('App visible');
-      // Refresh blessing if needed
-    }
-  }
-
-  /**
-   * Handle online status
-   */
-  handleOnlineStatus() {
-    console.log('App is online');
-    // Update UI to show online status
-  }
-
-  /**
-   * Handle offline status
-   */
-  handleOfflineStatus() {
-    console.log('App is offline');
-    // Update UI to show offline status
-  }
-
-  /**
-   * Set up touch interactions for mobile devices
-   */
-  setupTouchInteractions() {
-    const blessingCard = document.getElementById('blessingCard');
-
-    if (blessingCard) {
-      let touchStartTime = 0;
-      let touchStartY = 0;
-
-      // Touch start
-      blessingCard.addEventListener('touchstart', (e) => {
-        touchStartTime = Date.now();
-        touchStartY = e.touches[0].clientY;
-        blessingCard.style.transform = 'scale(0.98)';
-      }, { passive: true });
-
-      // Touch end
-      blessingCard.addEventListener('touchend', (e) => {
-        const touchEndTime = Date.now();
-        const touchEndY = e.changedTouches[0].clientY;
-        const touchDuration = touchEndTime - touchStartTime;
-        const touchDistance = Math.abs(touchEndY - touchStartY);
-
-        // Reset transform
-        blessingCard.style.transform = '';
-
-        // If it was a tap (short duration, minimal movement)
-        if (touchDuration < 300 && touchDistance < 10) {
-          this.handleBlessingCardTap();
+    setupGlassmorphism() {
+        // Add glassmorphism class to language selector
+        const langSelector = document.querySelector('.content-language-selector');
+        if (langSelector) {
+            langSelector.classList.add('glass-ui');
         }
-      }, { passive: true });
-
-      // Touch cancel
-      blessingCard.addEventListener('touchcancel', () => {
-        blessingCard.style.transform = '';
-      }, { passive: true });
-
-      // Also handle click for desktop
-      blessingCard.addEventListener('click', () => {
-        this.handleBlessingCardTap();
-      });
-    }
-  }
-
-  /**
-   * Handle blessing card tap/click
-   */
-  handleBlessingCardTap() {
-    // Add a subtle animation feedback
-    const blessingCard = document.getElementById('blessingCard');
-    if (blessingCard) {
-      blessingCard.style.transform = 'scale(1.02)';
-      setTimeout(() => {
-        blessingCard.style.transform = '';
-      }, 150);
     }
 
-    // Optionally trigger new blessing or other action
-    // For now, just provide visual feedback
-    console.log('Blessing card tapped');
-  }
-  
-  /**
-   * Set up content language change event listener
-   */
-  setupLanguageChangeListener() {
-    document.addEventListener('contentLanguageChanged', (event) => {
-      const { previousLanguage, currentLanguage } = event.detail;
-      
-      console.log(`Content language changed from ${previousLanguage} to ${currentLanguage}`);
-      
-      // Refresh current blessing display with new content language
-      this.refreshBlessingDisplay();
-    });
-  }
-  
-  /**
-   * Update content language dependent elements
-   */
-  updateLanguageDependentElements() {
-    // UI stays in English - only content language changes
-    // This method is kept for compatibility but doesn't need to do anything
-    console.log('Content language updated');
-  }
+    displayCurrentBlessing() {
+        if (window.blessingsManager) {
+            const blessing = window.blessingsManager.getCurrentBlessing();
+            if (blessing) {
+                this.updateBlessingContent(blessing);
+                this.updateBlessingNumber();
+                return;
+            }
+        }
+        
+        // Fallback: use simple embedded blessing
+        const fallbackBlessing = {
+            english: "For the gift of sight to see the world's colors",
+            arabic: "لنعمة البصر لرؤية ألوان العالم"
+        };
+        this.updateBlessingContent(fallbackBlessing);
+        if (this.elements.blessingNumber) {
+            this.elements.blessingNumber.textContent = '#1';
+        }
+    }
+
+    updateBlessingContent(blessing) {
+        if (!blessing || !this.elements.blessingEn || !this.elements.blessingAr) return;
+
+        // Use language manager to update content with proper transitions
+        if (window.languageManager) {
+            window.languageManager.updateBlessingContent(blessing);
+        } else {
+            // Fallback direct update
+            this.elements.blessingEn.textContent = blessing.english || '';
+            this.elements.blessingAr.textContent = blessing.arabic || '';
+        }
+    }
+
+    updateBlessingNumber() {
+        if (!this.elements.blessingNumber || !window.blessingsManager) return;
+        
+        const currentIndex = window.blessingsManager.getCurrentIndex();
+        this.elements.blessingNumber.textContent = `#${currentIndex + 1}`;
+    }
+
+    handleNewBlessingRequest() {
+        console.log('handleNewBlessingRequest called, isInitialized:', this.state.isInitialized);
+        
+        if (!this.state.isInitialized) {
+            console.log('App not initialized yet, ignoring request');
+            return;
+        }
+
+        // Hide hint after first interaction
+        this.hideInteractionHint();
+
+        // Trigger glow effect
+        this.triggerGlowEffect();
+
+        // Request new blessing
+        if (window.blessingsManager) {
+            console.log('Requesting new blessing...');
+            const newBlessing = window.blessingsManager.getNewBlessing();
+            console.log('New blessing received:', newBlessing);
+            if (newBlessing) {
+                this.updateHistoryDisplay();
+            }
+        } else {
+            console.log('blessingsManager not available, using simple fallback');
+            // Simple fallback with embedded blessings
+            this.handleSimpleBlessingChange();
+        }
+    }
+
+    hideInteractionHint() {
+        if (this.state.hintHasBeenHidden || !this.elements.interactionHint) return;
+        
+        this.elements.interactionHint.style.opacity = '0';
+        this.elements.interactionHint.style.height = '0';
+        this.elements.interactionHint.style.margin = '0';
+        this.state.hintHasBeenHidden = true;
+    }
+
+    triggerGlowEffect() {
+        if (!this.elements.glowEffect) return;
+        
+        this.elements.glowEffect.classList.add('active');
+        setTimeout(() => {
+            this.elements.glowEffect.classList.remove('active');
+        }, 1000);
+    }
+
+    handleBlessingChanged(detail) {
+        this.updateBlessingContent(detail.blessing);
+        this.updateBlessingNumber();
+    }
+
+    handleLanguageChanged(detail) {
+        // Language manager handles the content updates
+        // We just need to update the history display
+        this.updateHistoryDisplay();
+    }
+
+    handleBlessingsLoaded(detail) {
+        console.log(`Loaded ${detail.count} blessings in ${detail.categories.length} categories`);
+        this.displayCurrentBlessing();
+    }
+
+    initializeHistory() {
+        if (!window.blessingsManager) return;
+        
+        // Add welcome card
+        this.addWelcomeCard();
+        
+        // Display existing history
+        this.updateHistoryDisplay();
+    }
+
+    addWelcomeCard() {
+        if (!this.elements.historyContainer) return;
+        
+        const welcomeCard = document.createElement('div');
+        welcomeCard.className = 'history-card slide-in-up';
+        welcomeCard.innerHTML = `
+            <p class="blessing-english">Your journey starts here.</p>
+            <p class="blessing-arabic">رحلتك تبدأ هنا</p>
+        `;
+        
+        this.elements.historyContainer.appendChild(welcomeCard);
+    }
+
+    updateHistoryDisplay() {
+        if (!this.elements.historyContainer || !window.blessingsManager || !window.languageManager) return;
+        
+        // Clear existing history cards (keep welcome card)
+        const historyCards = this.elements.historyContainer.querySelectorAll('.history-card:not(:last-child)');
+        historyCards.forEach(card => card.remove());
+        
+        // Get history and display
+        const history = window.blessingsManager.getHistory();
+        history.reverse().forEach(blessing => {
+            if (blessing) {
+                const card = window.languageManager.createHistoryCard(blessing);
+                // Insert before welcome card
+                const welcomeCard = this.elements.historyContainer.lastElementChild;
+                this.elements.historyContainer.insertBefore(card, welcomeCard);
+            }
+        });
+    }
+
+    setupTouchGestures() {
+        let startY = 0;
+        let startX = 0;
+        
+        if (this.elements.blessingCard) {
+            this.elements.blessingCard.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+                startX = e.touches[0].clientX;
+            });
+            
+            this.elements.blessingCard.addEventListener('touchend', (e) => {
+                const endY = e.changedTouches[0].clientY;
+                const endX = e.changedTouches[0].clientX;
+                const diffY = startY - endY;
+                const diffX = startX - endX;
+                
+                // Swipe up gesture for new blessing
+                if (Math.abs(diffY) > Math.abs(diffX) && diffY > 50) {
+                    this.handleNewBlessingRequest();
+                }
+            });
+        }
+    }
+
+    handleKeyboardShortcuts(e) {
+        if (!this.state.isInitialized) return;
+        
+        switch (e.key) {
+            case ' ':
+            case 'Enter':
+                e.preventDefault();
+                this.handleNewBlessingRequest();
+                break;
+        }
+    }
+
+    showLoadingScreen() {
+        if (this.elements.loadingScreen) {
+            this.elements.loadingScreen.classList.add('active');
+        }
+    }
+
+    hideLoadingScreen() {
+        if (this.elements.loadingScreen) {
+            this.elements.loadingScreen.classList.remove('active');
+        }
+    }
+
+
+
+    // Public API methods
+    getNewBlessing() {
+        this.handleNewBlessingRequest();
+    }
+
+    getCurrentBlessing() {
+        return window.blessingsManager ? window.blessingsManager.getCurrentBlessing() : null;
+    }
+
+    setLanguage(language) {
+        if (window.languageManager) {
+            window.languageManager.setLanguage(language);
+        }
+    }
+
+    // Simple fallback method for when modules aren't loaded
+    handleSimpleBlessingChange() {
+        const simpleBlessings = [
+            { english: "For the gift of sight to see the world's colors", arabic: "لنعمة البصر لرؤية ألوان العالم" },
+            { english: "For every single heartbeat, a silent drum of life", arabic: "لكل نبضة قلب، طبل حياة صامت" },
+            { english: "For the air that fills our lungs without a thought", arabic: "للهواء الذي يملأ رئتينا دون تفكير" },
+            { english: "For the simple ability to stand, walk, and move freely", arabic: "للقدرة البسيطة على الوقوف والمشي والحركة بحرية" },
+            { english: "For the restful sleep that recharges mind and body", arabic: "للنوم المريح الذي يعيد شحن العقل والجسد" }
+        ];
+        
+        // Get random blessing
+        const randomIndex = Math.floor(Math.random() * simpleBlessings.length);
+        const blessing = simpleBlessings[randomIndex];
+        
+        // Update content
+        this.updateBlessingContent(blessing);
+        
+        if (this.elements.blessingNumber) {
+            this.elements.blessingNumber.textContent = `#${randomIndex + 1}`;
+        }
+        
+        console.log('Simple blessing updated:', blessing);
+    }
+
+    // Settings functionality
+    showSettings() {
+        // Create settings modal
+        const modal = this.createSettingsModal();
+        document.body.appendChild(modal);
+        
+        // Show modal with animation
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 10);
+    }
+
+    createSettingsModal() {
+        const modal = document.createElement('div');
+        modal.className = 'settings-modal';
+        modal.innerHTML = `
+            <div class="settings-content glass-ui">
+                <div class="settings-header">
+                    <h2>Settings</h2>
+                    <button class="close-btn" onclick="this.closest('.settings-modal').remove()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="settings-body">
+                    <div class="setting-item">
+                        <label>Animations</label>
+                        <input type="checkbox" id="animations-toggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label>Auto-advance (seconds)</label>
+                        <input type="range" id="auto-advance" min="0" max="30" value="0">
+                        <span id="auto-advance-value">Off</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>Visit Count</label>
+                        <span>${window.blessingStorage ? window.blessingStorage.getVisitCount() : 1}</span>
+                    </div>
+                    <div class="setting-item">
+                        <button class="reset-btn" onclick="window.alhamdulillahApp.resetData()">Reset All Data</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add event listeners
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
+        
+        return modal;
+    }
+
+    resetData() {
+        if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+            if (window.blessingStorage) {
+                window.blessingStorage.reset();
+            }
+            location.reload();
+        }
+    }
 }
 
-// Initialize the app
-window.app = new BlessingReminderApp();
+// Initialize app when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.alhamdulillahApp = new AlhamdulillahApp();
+});
+
+// Service Worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('SW registered: ', registration);
+            })
+            .catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}

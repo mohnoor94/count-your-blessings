@@ -10,16 +10,21 @@
     <meta name="author" content="Blessing Reminder">
 
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2D5A27">
+    <meta name="theme-color" content="#a0c4ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Blessings">
+    <meta name="apple-mobile-web-app-title" content="Alhamdulillah">
     <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Favicon and Icons -->
     <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.json">
+
+    <!-- Google Fonts: Inter for English, Cairo for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
     <!-- Preload Critical Resources -->
     <link rel="preload" href="assets/css/main.css" as="style">
@@ -30,25 +35,36 @@
     <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/arabic.css">
 
-    <title>Blessing Reminder - Alhamdulillah</title>
+    <title>Alhamdulillah Reminder</title>
 </head>
 
 <body>
+    <!-- Screen Glow Element -->
+    <div id="glow-effect" class="glow-effect"></div>
+
     <!-- App Shell -->
     <div id="app" class="app">
         <!-- Header -->
         <header class="header" role="banner">
             <div class="header-content">
-                <h1 class="app-title">Blessing Reminder</h1>
+                <div class="header-top">
+                    <h1 class="app-title">
+                        <span class="arabic-text">الحمد لله</span>
+                        <span class="english-subtitle">Alhamdulillah</span>
+                    </h1>
+                    <button class="settings-btn" id="settings-btn" aria-label="Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m17-4a4 4 0 0 1-8 0 4 4 0 0 1 8 0zM7 21a4 4 0 0 1-8 0 4 4 0 0 1 8 0z"></path>
+                        </svg>
+                    </button>
+                </div>
                 
                 <!-- Language Selector for Content -->
                 <div class="content-language-selector">
-                    <label for="contentLanguage" class="selector-label">Content:</label>
-                    <select id="contentLanguage" class="language-select" aria-label="Select blessing content language">
-                        <option value="english">English</option>
-                        <option value="arabic">العربية</option>
-                        <option value="both">Both</option>
-                    </select>
+                    <button data-lang="both" class="lang-btn active">Both</button>
+                    <button data-lang="en" class="lang-btn">English</button>
+                    <button data-lang="ar" class="lang-btn font-arabic">العربية</button>
                 </div>
             </div>
         </header>
@@ -57,33 +73,26 @@
         <main class="main-content" role="main">
             <!-- Blessing Card Container -->
             <section class="blessing-section" aria-live="polite">
-                <div class="blessing-card" id="blessingCard">
+                <div class="blessing-card glass-ui" id="blessing-card">
+                    <span id="blessing-number" class="blessing-number"></span>
                     <div class="blessing-content">
                         <div class="blessing-text" id="blessingText">
-                            <p class="blessing-arabic" lang="ar" dir="rtl">الحمد لله رب العالمين</p>
-                            <p class="blessing-english" lang="en" dir="ltr">Praise be to Allah, Lord of all the worlds
-                            </p>
+                            <p class="blessing-english" id="blessing-en" lang="en" dir="ltr">Praise be to Allah, Lord of all the worlds</p>
+                            <p class="blessing-arabic" id="blessing-ar" lang="ar" dir="rtl">الحمد لله رب العالمين</p>
                         </div>
                     </div>
-                    <button class="new-blessing-btn" id="newBlessingBtn" aria-label="Get new blessing">
-                        <span class="btn-text">New Blessing</span>
-                        <span class="btn-icon">✨</span>
-                    </button>
+                </div>
+                <p id="interaction-hint" class="interaction-hint">Tap the card to discover another blessing</p>
+            </section>
+
+            <!-- History Section -->
+            <section class="history-section">
+                <h3 class="history-title">Your Journey of Gratitude</h3>
+                <div id="history-container" class="history-container">
+                    <!-- History items will be added here -->
                 </div>
             </section>
         </main>
-
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
-            <button class="nav-btn" id="historyBtn" aria-label="View blessing history">
-                <span class="nav-icon">📖</span>
-                <span class="nav-label">History</span>
-            </button>
-            <button class="nav-btn" id="settingsBtn" aria-label="Open settings">
-                <span class="nav-icon">⚙️</span>
-                <span class="nav-label">Settings</span>
-            </button>
-        </nav>
     </div>
 
     <!-- Loading Screen -->
